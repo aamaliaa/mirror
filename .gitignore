@@ -2,3 +2,5 @@
 config.js
 node_modules
 public
+google-calendar.json
+client_secret.json

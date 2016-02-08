@@ -1,7 +1,7 @@
 var React = require('react');
 var moment = require('moment');
 var _ = require('underscore');
-var statusFilter = require('../config').status.regexFilter;
+var config = require('../config').status;
 
 var StatusActions = require('../actions/StatusActions');
 var StatusStore = require('../stores/StatusStore');
@@ -15,10 +15,15 @@ var Status = React.createClass({
   componentDidMount: function() {
     StatusActions.get();
     StatusStore.listen(this.onChange);
+    
+    this._interval = setInterval(function() {
+      StatusActions.get();
+    }, config.delay);
   },
 
   componentWillUnmount: function() {
     StatusStore.unlisten(this.onChange);
+    clearInterval(this._interval);
   },
 
   onChange: function (state) {
@@ -26,6 +31,8 @@ var Status = React.createClass({
   },
 
   render: function() {
+    console.log('status render');
+
     var status = this.parseStatus();
 
     if (!status) {
@@ -41,15 +48,27 @@ var Status = React.createClass({
   },
 
   parseStatus: function () {
-    var status = _.find(this.state.status, function (s) {
-      return statusFilter.test(s.name) && s.status !== 'GOOD SERVICE';
-    });
+    var s = this.state.status
+    var filters = config.regexFilters;
+    var status = '';
+    for (var i=0; i<s.length; i++) {
+      for (var j=0; j<filters.length; j++) {
+        if (filters[j].test(s[i].name) && s[i].status !== 'GOOD SERVICE') {
+          status += s[i].text;
+        }
+      }
+    }
 
-    if (!status) {
+    if (status === '') {
       return false;
     }
 
-    var text = status.text.replace(/<(br)\/?>/gi, '');
+    var text = status
+      .replace(/<(br)\/?>/gi, '')
+      .replace(/\[(.*?)\]/g, function(match) {
+        var route = match.match(/\[(.+?)\]/)[1];
+        return '<div class="subway subway-' + route + '">' + route + '</div>';
+      });
 
     return (
       <div

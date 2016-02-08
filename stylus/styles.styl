@@ -1,43 +1,37 @@
 @import 'mixins'
 @import 'colors'
-
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P')
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,700')
 
 html
-  font-family: 'Press Start 2P', Arial, sans-serif
+  font-family: 'Open Sans', Arial, sans-serif
+  font-weight: 300
+  font-size: 24px
   background-color: #000
   color: #fff
-  margin: 20px
 
-@import subway
+.left
+  width: 50%
+  float: left
 
-h3
+.right
+  width: 50%
+  float: right
+
+@import 'components/*'
+
+.left > div,
+.right > div
+  clearfix()
+
+  &:not(:first-child)
+    margin-top: 25px
+
+#error
+  position: absolute
+  bottom: 0
+  width: 100%
   text-align: center
-  font-size: 20px
 
-.times
-  margin: 0 auto
-  list-style: none
-  padding-left: 0
-
-  li
-    padding-bottom: 10px
-    position: relative
-
-.arrival-time
-  display: inline-block
-  margin-left: 10px
-  height: 25px
-  vertical-align: middle
-
-.status
-  font-family: Helvetica, Arial, sans-serif
-  margin-top: 20px
-
-  a
-    display: block
-    margin: 5px 0
-
-  span,
-  .plannedWorkDetail
-    display: none
+  i
+    color: red
+    margin-right: 5px

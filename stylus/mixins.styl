@@ -3,3 +3,9 @@ border-radius(r)
   -moz-border-radius: r
   -ms-border-radius: r
   border-radius: r
+
+clearfix()
+  &:after
+    content ""
+    display table
+    clear both

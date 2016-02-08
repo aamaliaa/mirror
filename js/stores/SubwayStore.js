@@ -6,8 +6,8 @@ var SubwayStore = alt.createStore({
   displayName: 'SubwayStore',
 
   bindListeners: {
-    getTimes: SubwayActions.getTimes,
-    errorTimes: SubwayActions.errorTimes
+    updateTimes: SubwayActions.UPDATE_TIMES,
+    errorTimes: SubwayActions.ERROR_TIMES
   },
 
   state: {
@@ -15,15 +15,11 @@ var SubwayStore = alt.createStore({
     error: null
   },
 
-  getTimes: function (data) {
+  updateTimes: function (data) {
     this.setState({
       times: data,
       error: null
     });
-
-    setTimeout(function() {
-      SubwayActions.getTimes();
-    }, 30000);
   },
 
   errorTimes: function (err) {

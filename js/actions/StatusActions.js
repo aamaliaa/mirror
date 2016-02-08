@@ -1,22 +1,31 @@
 var alt = require('../alt');
-var request = require('superagent');
+var fetch = require('node-fetch');
+var host = require('../config').host;
 
 var statusActions = alt.createActions({
 
   get: function() {
     var self = this;
-    request
-      .get('/status/subway')
-      .end(function (err, res) {
-        if (err || !res) {
-          self.actions.error(err);
-        }
-        self.dispatch(res.body);
+    return function(dispatch) {
+      fetch(host + '/status/subway')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function (data) {
+        self.updateStatus(data);
+      })
+      .catch(function (err) {
+        self.errorStatus(err);
       });
+    }
   },
 
-  error: function(err) {
-    this.dispatch(err);
+  updateStatus: function(status) {
+    return status;
+  },
+
+  errorStatus: function(err) {
+    return err;
   }
 
 });

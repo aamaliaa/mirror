@@ -6,7 +6,7 @@ var StatusStore = alt.createStore({
   displayName: 'StatusStore',
 
   bindListeners: {
-    getStatus: StatusActions.get,
+    updateStatus: StatusActions.UPDATE_STATUS,
   },
 
   state: {
@@ -14,15 +14,11 @@ var StatusStore = alt.createStore({
     error: null
   },
 
-  getStatus: function (data) {
+  updateStatus: function (data) {
     this.setState({
       status: data,
       error: null
     });
-
-    setTimeout(function() {
-      StatusActions.get();
-    }, 300000); // 5 min
   },
 
   errorTimes: function (err) {
