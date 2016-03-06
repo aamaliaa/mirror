@@ -10,7 +10,7 @@ var Forecast = require('forecast');
 var moment = require('moment');
 
 var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
-var TOKEN_PATH = './google-calendar.json';
+var TOKEN_PATH = __dirname + '/google-calendar.json';
 
 var config = require('./config');
 var mtaKey = config.api.mtaKey;
@@ -40,7 +40,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/version', function(req, res) {
-	fs.readFile('package.json', function(err, package) {
+	fs.readFile(__dirname + '/package.json', function(err, package) {
 		package = JSON.parse(package)
 		res.json({ version: package.version })
 	});
@@ -95,7 +95,7 @@ function authorize(credentials, callback) {
 
 app.get('/calendar', function (req, res) {
     // Load client secrets from a local file.
-  fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+  fs.readFile(__dirname + '/client_secret.json', function processClientSecrets(err, content) {
     if (err) {
       console.log('Error loading client secret file: ' + err);
       return;

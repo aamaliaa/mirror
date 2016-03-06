@@ -15,7 +15,7 @@ var Weather = React.createClass({
   componentDidMount: function() {
     WeatherActions.get();
     WeatherStore.listen(this.onChange);
-    
+
     this._interval = setInterval(function() {
       WeatherActions.get();
     }, config.delay);
@@ -40,8 +40,8 @@ var Weather = React.createClass({
     var w = this.state.weather;
     var temp = Math.round(w.currently.temperature);
     var feelsLike = Math.round(w.currently.apparentTemperature);
-    var summary = w.daily.data[0].summary;
-    var precipitation = (w.daily.data[0].precipProbability * 100) + '%'
+    var summary = w.hourly.summary;
+    var precipitation = Math.round(w.daily.data[0].precipProbability * 100) + '%'
 
     return (
       <div id="weather">
