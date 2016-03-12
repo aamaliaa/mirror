@@ -41,7 +41,7 @@ var Weather = React.createClass({
     var temp = Math.round(w.currently.temperature);
     var feelsLike = Math.round(w.currently.apparentTemperature);
     var summary = w.hourly.summary;
-    var precipitation = Math.round(w.daily.data[0].precipProbability * 100) + '%'
+    var precipitation = Math.round(w.daily.data[0].precipProbability * 100)
 
     return (
       <div id="weather">
@@ -50,9 +50,11 @@ var Weather = React.createClass({
         </div>
         <div className="feelsLike">Feels like {feelsLike}&deg;</div>
         <div className="summary">{summary}</div>
-        <div className="precipitation">
-          <i className="fa fa-umbrella"></i> {precipitation}
-        </div>
+        {precipitation > 0 && (
+          <div className="precipitation">
+            <i className="fa fa-umbrella"></i> {precipitation + '%'}
+          </div>
+        )}
       </div>
     );
   }

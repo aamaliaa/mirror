@@ -29,15 +29,21 @@ var Calendar = React.createClass({
     this.setState(state);
   },
 
-  render: function() {
-    if (_.isEmpty(this.state.calendar)) {
-      return false;
-    }
+  isToday: function(dateTime) {
+    var now = moment();
+    return moment(dateTime).diff(now, 'days') === 0;
+  },
 
+  renderItems: function(calendarItems, label) {
+    if (_.isEmpty(calendarItems)) {
+      return null;
+    }
+    
     return (
-      <div id="calendar">
+      <div>
+        <h5>{label}</h5>
         <ul>
-          {this.state.calendar.map(function (item) {
+          {calendarItems.map(function(item) {
             var time = 'ALL DAY';
 
             if (item.start.dateTime && item.end.dateTime) {
@@ -53,6 +59,31 @@ var Calendar = React.createClass({
             );
           })}
         </ul>
+      </div>
+    );
+  },
+
+  render: function() {
+    if (_.isEmpty(this.state.calendar)) {
+      return false;
+    }
+
+    var now = moment();
+    var todayItems = [];
+    var tomorrowItems = [];
+
+    this.state.calendar.map(function(item) {
+      if (this.isToday(item.start.dateTime) || this.isToday(item.end.dateTime)) {
+        todayItems.push(item);
+      } else {
+        tomorrowItems.push(item);
+      }
+    }, this);
+    console.log(todayItems, tomorrowItems)
+    return (
+      <div id="calendar">
+        {this.renderItems(todayItems, 'today')}
+        {this.renderItems(tomorrowItems, 'tomorrow')}
       </div>
     );
   }

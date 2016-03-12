@@ -73,28 +73,6 @@ var Subway = React.createClass({
     );
   },
 
-  // renderTimes: function(schedule) {
-  //   var arrivalTime, leaveTime;
-  //   var now = (new Date()).getTime() / 1000;
-  //
-  //   return (
-  //     <ul className='times'>
-  //       {schedule.times.map(function (s) {
-  //         if (now > s.arrivalTime) {
-  //           return;
-  //         }
-  //
-  //         return (
-  //           <li key={s.arrivalTime} className={'route-' + s.routeId}>
-  //             {this.renderSubway(s.routeId)}
-  //             <div className="arrival-time">{s.arrivalFromNow.str}</div>
-  //           </li>
-  //         );
-  //       }.bind(this))}
-  //     </ul>
-  //   );
-  // },
-
   render: function() {
     console.log('subway render');
     if (_.isEmpty(this.state.times)) {

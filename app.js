@@ -9,13 +9,14 @@ var googleAuth = require('google-auth-library');
 var Forecast = require('forecast');
 var moment = require('moment');
 
-var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
-var TOKEN_PATH = __dirname + '/google-calendar.json';
-
 var config = require('./config');
+
 var mtaKey = config.api.mtaKey;
 var forecastKey = config.api.forecastKey;
 var weather = config.weather;
+var googleCalSecretPath = config.api.googleCalSecretPath;
+var googleCalTokenPath = config.api.googleCalTokenPath;
+var googleCalScopes = ['https://www.googleapis.com/auth/calendar.readonly'];
 
 var forecast = new Forecast({
 	service: 'forecast.io',
@@ -83,7 +84,7 @@ function authorize(credentials, callback) {
   var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, function(err, token) {
+  fs.readFile(googleCalTokenPath, function(err, token) {
     if (err) {
       getNewToken(oauth2Client, callback);
     } else {
@@ -95,7 +96,7 @@ function authorize(credentials, callback) {
 
 app.get('/calendar', function (req, res) {
     // Load client secrets from a local file.
-  fs.readFile(__dirname + '/client_secret.json', function processClientSecrets(err, content) {
+  fs.readFile(googleCalSecretPath, function processClientSecrets(err, content) {
     if (err) {
       console.log('Error loading client secret file: ' + err);
       return;
@@ -104,13 +105,12 @@ app.get('/calendar', function (req, res) {
     // Google Calendar API.
     authorize(JSON.parse(content), function(auth) {
       var calendar = google.calendar('v3');
-			var now = moment().utc().format();
-			var midnight = moment().add(1, 'days').startOf('day').utc().format();
+			var now = moment();
       calendar.events.list({
         auth: auth,
         calendarId: 'primary',
-        timeMin: now,
-        timeMax: midnight,
+        timeMin: now.utc().format(),
+        timeMax: now.add(1, 'days').utc().format(),
         singleEvents: true,
         orderBy: 'startTime'
       }, function(err, response) {

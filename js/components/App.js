@@ -40,7 +40,7 @@ var App = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    // new app render only if minute updates
+    // new render only if minute updates (since we're not displaying seconds)
     return nextState.date.getMinutes() !== this.state.date.getMinutes();
   },
 
