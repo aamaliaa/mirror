@@ -1,8 +1,8 @@
 {
-  "name": "dash",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "mirror",
+  "version": "1.0.0",
+  "description": "a smart mirror interface",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "webpack -d --watch --colors --progress & node app.js",
