@@ -1,6 +1,5 @@
 var React = require('react');
 var _ = require('underscore');
-var Isvg = require('react-inlinesvg');
 var config = require('../config').weather;
 
 var WeatherActions = require('../actions/WeatherActions');
