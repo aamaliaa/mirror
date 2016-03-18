@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # git_update_check.sh
 #
 # Checks git remote for updates. If there are updates, it pulls, installs

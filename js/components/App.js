@@ -25,7 +25,7 @@ var App = React.createClass({
     // version polling
     setInterval(function() {
       AppActions.getVersion();
-    }, 30000); // 30 secs
+    }, 60000); // 1 min
 
     // clock
     setInterval(function() {
