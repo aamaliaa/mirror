@@ -81,6 +81,11 @@ var Subway = React.createClass({
 
     var schedule = this.getTimes(config.direction);
 
+    // if no times then don't show
+    if (_.isEmpty(schedule.leave)) {
+      return null;
+    }
+
     return (
       <div>
         <div id="subway">
