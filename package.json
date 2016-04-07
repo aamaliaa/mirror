@@ -39,6 +39,7 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-fa": "^4.0.0",
+    "react-mousetrap": "0.0.8",
     "underscore": "^1.8.3"
   }
 }

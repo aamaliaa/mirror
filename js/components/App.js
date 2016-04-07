@@ -1,4 +1,5 @@
 var React = require('react');
+var mouseTrap = require('react-mousetrap').mouseTrap;
 
 var Clock = require('./Clock');
 var Weather = require('./Weather');
@@ -10,13 +11,20 @@ var Chores = require('./Chores');
 var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
+var utils = require('../utils');
+
 var App = React.createClass({
 
   getInitialState: function() {
     return {
       app: AppStore.getState(),
-      date: new Date()
+      date: new Date(),
+      mainContent: ''
     };
+  },
+
+  componentWillMount: function() {
+    this.props.bindShortcut('down', this.showIP);
   },
 
   componentDidMount: function() {
@@ -37,17 +45,35 @@ var App = React.createClass({
 
   componentWillUnmount: function() {
     AppStore.unlisten(this.onChange);
+    this.props.unbindShortcut('down');
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
     // new render only if minute updates (since we're not displaying seconds)
-    return nextState.date.getMinutes() !== this.state.date.getMinutes();
+    // or main content has changed
+    return (
+      (nextState.date.getMinutes() !== this.state.date.getMinutes()) ||
+      (nextState.mainContent !== this.state.mainContent)
+    );
   },
 
   onChange: function(state) {
-    this.setState({
-      app: state
+    this.setState({ app: state });
+  },
+
+  showIP: function() {
+    var self = this;
+    utils.getLocalIP().then(function(ip) {
+      self.showContent(ip);
     });
+  },
+
+  showContent: function(mainContent) {
+    var self = this;
+    this.setState({ mainContent });
+    setTimeout(function() {
+      self.setState({ mainContent: '' });
+    }, 10000);
   },
 
   render: function() {
@@ -74,9 +100,12 @@ var App = React.createClass({
           <Chores date={this.state.date} />
         </div>
         {error}
+        <div id="main">
+          {this.state.mainContent}
+        </div>
       </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = mouseTrap(App);
