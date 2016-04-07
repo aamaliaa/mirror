@@ -40,11 +40,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/version', function(req, res) {
-	fs.readFile(__dirname + '/package.json', function(err, package) {
-		package = JSON.parse(package)
-		res.json({ version: package.version })
-	});
+app.get('/lastUpdated', function(req, res) {
+	fs.stat(__dirname + '/public/js/main.js', function(err, stats) {
+		res.json({ lastUpdated: stats.ctime });
+	})
 });
 
 app.get('/schedule/:id', function (req, res) {

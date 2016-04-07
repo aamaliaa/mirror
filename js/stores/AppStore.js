@@ -6,21 +6,21 @@ var AppStore = alt.createStore({
   displayName: 'AppStore',
 
   bindListeners: {
-    updateVersion: AppActions.UPDATE_VERSION,
+    updateLastUpdated: AppActions.UPDATE_LAST_UPDATED,
     appError: AppActions.APP_ERROR
   },
 
   state: {
-    version: null,
+    lastUpdated: null,
     error: null
   },
 
-  updateVersion: function(version) {
+  updateLastUpdated: function(lastUpdated) {
     var error = null;
-    if (this.state.version && this.state.version !== version) {
+    if (this.state.lastUpdated && new Date(this.state.lastUpdated) < new Date(lastUpdated)) {
       window.location.reload();
     }
-    this.setState({version, error});
+    this.setState({ lastUpdated, error });
   },
 
   appError: function(error) {

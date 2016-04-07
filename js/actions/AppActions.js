@@ -4,16 +4,16 @@ var host = require('../../config').host;
 
 var appActions = alt.createActions({
 
-  getVersion: function() {
+  getLastUpdated: function() {
     var self = this;
-    console.log('app version actions get()')
+    console.log('app lastUpdated actions get()');
     return function(dispatch) {
-      fetch(host + '/version')
+      fetch(host + '/lastUpdated')
       .then(function(res) {
         return res.json();
       })
       .then(function(data){
-        self.updateVersion(data.version);
+        self.updateLastUpdated(data.lastUpdated);
       })
       .catch(function(err) {
         self.appError(err);
@@ -21,8 +21,8 @@ var appActions = alt.createActions({
     }
   },
 
-  updateVersion: function(version) {
-    return version;
+  updateLastUpdated: function(lastUpdated) {
+    return lastUpdated;
   },
 
   appError: function(err) {

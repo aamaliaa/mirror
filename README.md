@@ -19,3 +19,8 @@ Register for an MTA API key [here](http://datamine.mta.info/user/register). Indi
 #### Google Calendar API
 
 In order to get the correct auth credentials, follow the [Google Calendar API Quickstart tutorial](https://developers.google.com/google-apps/calendar/quickstart/nodejs). Save the resulting `client_secret.json` (googleCalSecretPath) and `calendar-nodejs-quickstart.json` (googleCalTokenPath) files to the app directory and specify their paths in `config.js` in order to use the Google Calendar integration.
+
+### Keyboard Shortcuts
+
+* &uarr; - shows when the version of `main.js` the page is accessing was last built/changed
+* &darr; - shows the machine's local IP address (useful for remote debugging)

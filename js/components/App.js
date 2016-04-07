@@ -1,4 +1,5 @@
 var React = require('react');
+var moment = require('moment');
 var mouseTrap = require('react-mousetrap').mouseTrap;
 
 var Clock = require('./Clock');
@@ -25,6 +26,7 @@ var App = React.createClass({
 
   componentWillMount: function() {
     this.props.bindShortcut('down', this.showIP);
+    this.props.bindShortcut('up', this.showLastUpdated);
   },
 
   componentDidMount: function() {
@@ -32,8 +34,8 @@ var App = React.createClass({
 
     // version polling
     setInterval(function() {
-      AppActions.getVersion();
-    }, 60000); // 1 min
+      AppActions.getLastUpdated();
+    }, 30000); // 30 secs
 
     // clock
     setInterval(function() {
@@ -66,6 +68,11 @@ var App = React.createClass({
     utils.getLocalIP().then(function(ip) {
       self.showContent(ip);
     });
+  },
+
+  showLastUpdated: function() {
+    var self = this;
+    this.showContent('last updated ' + moment(this.state.app.lastUpdated).fromNow());
   },
 
   showContent: function(mainContent) {
