@@ -21,7 +21,7 @@ if [[ "${reslog}" != "" ]] ; then
   echo "Building app..."
   npm run build
   echo "Restarting app..."
-  forever restart ~/mirror/app.js
+  /usr/local/bin/forever restart ~/mirror/app.js
 else
   echo "Up-to-date."
 fi
