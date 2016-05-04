@@ -31,14 +31,14 @@ var Calendar = React.createClass({
 
   isToday: function(dateTime) {
     var now = moment();
-    return moment(dateTime).diff(now, 'days') === 0;
+    return moment(dateTime).date() === now.date();
   },
 
   renderItems: function(calendarItems, label) {
     if (_.isEmpty(calendarItems)) {
       return null;
     }
-    
+
     return (
       <div>
         <h5>{label}</h5>
@@ -79,7 +79,7 @@ var Calendar = React.createClass({
         tomorrowItems.push(item);
       }
     }, this);
-    console.log(todayItems, tomorrowItems)
+
     return (
       <div id="calendar">
         {this.renderItems(todayItems, 'today')}
