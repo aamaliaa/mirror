@@ -8,12 +8,21 @@ html
   background-color: #000
   color: #fff
 
-.left
+body
+  margin: 0
+  padding: 0
+
+.left, .right
+  box-sizing: border-box
+  padding: 0px 5px 5px 5px
+  height: 100vh
   width: 50%
+  position: relative
+
+.left
   float: left
 
 .right
-  width: 50%
   float: right
 
 @import 'components/*'
