@@ -2,9 +2,57 @@
   float: left
   width: 100%
 
+  .currently
+    display: flex
+    align-items: center
+
+  .temperature, .icon-wrapper
+    display: inline-block
+
   .temperature
     font-size: 5em
     line-height: 1
 
+  .high-low
+    margin-top: -10px
+    text-align: center
+    font-size: 0.65em
+    font-weight: bold
+
+    .high
+      color: #FF4136
+
+    .low
+      color: #0074D9
+
   .feelsLike
     font-size: 1.2em
+
+  .weather-icon
+    display: inline-block
+    width: 4.5em
+    height: 4em
+    background-size: contain
+    background-position: center
+    background-repeat: no-repeat
+
+    &.clear-day
+      background-image: url(../icons/clear_day.svg)
+    &.clear-night
+      background-image: url(../icons/clear_night.svg)
+    &.cloudy
+      background-image: url(../icons/cloudy.svg)
+    &.fog
+      background-image: url(../icons/fog.svg)
+    &.partly-cloudy-day
+      background-image: url(../icons/partly_cloudy_day.svg)
+    &.partly-cloudy-night
+      background-image: url(../icons/partly_cloudy_night.svg)
+    &.rain
+      background-image: url(../icons/rain.svg)
+    &.sleet
+      background-image: url(../icons/sleet.svg)
+    &.snow
+      background-image: url(../icons/snow.svg)
+    &.wind
+      background-image: url(../icons/wind.svg)

@@ -38,14 +38,23 @@ var Weather = React.createClass({
 
     var w = this.state.weather;
     var temp = Math.round(w.currently.temperature);
+    var tempMax = Math.round(w.daily.data[0].temperatureMax);
+    var tempMin = Math.round(w.daily.data[0].temperatureMin);
     var feelsLike = Math.round(w.currently.apparentTemperature);
     var summary = w.hourly.summary;
     var precipitation = Math.round(w.daily.data[0].precipProbability * 100)
+    var currentIcon = w.currently.icon;
 
     return (
       <div id="weather">
-        <div className="temperature">
-          {temp}&deg;
+        <div className="currently">
+          <div className="temperature">{temp + '°'}</div>
+          <div className="icon-wrapper">
+            <div className={"weather-icon " + currentIcon} />
+            <div className="high-low">
+              <span className="high">{`${tempMax}°`}</span>&nbsp;&nbsp;<span className="low">{`${tempMin}°`}</span>
+            </div>
+          </div>
         </div>
         <div className="feelsLike">Feels like {feelsLike}&deg;</div>
         <div className="summary">{summary}</div>
