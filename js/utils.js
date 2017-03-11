@@ -1,6 +1,29 @@
-var utils = {
+import fetch from 'node-fetch'
+import { host, subway } from './config'
 
-    getLocalIP: function() {
+const utils = {
+
+    getLastUpdated: () => {
+      return get(`${host}/lastUpdated`)
+    },
+
+    getWeather: () => {
+      return get(`${host}/weather`)
+    },
+
+    getSubwayTimes: () => {
+      return get(`${host}/schedule/${subway.stationId}`)
+    },
+
+    getSubwayStatus: () => {
+      return get(`${host}/status/subway`)
+    },
+
+    getCalendar: () => {
+      return get(`${host}/calendar`)
+    },
+
+    getLocalIP: () => {
       return new Promise(function(resolve, reject) {
         var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
         var pc = new RTCPeerConnection({iceServers:[]});
@@ -19,4 +42,15 @@ var utils = {
 
 };
 
-module.exports = utils;
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  }
+  const error = new Error(response.statusText)
+  error.response = response
+  throw error
+}
+
+const get = url => fetch(url).then(checkStatus)
+
+export default utils

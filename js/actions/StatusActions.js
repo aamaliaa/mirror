@@ -1,13 +1,12 @@
-var alt = require('../alt');
-var fetch = require('node-fetch');
-var host = require('../config').host;
+import alt from '../alt'
+import utils from '../utils'
 
 var statusActions = alt.createActions({
 
   get: function() {
     var self = this;
     return function(dispatch) {
-      fetch(host + '/status/subway')
+      utils.getSubwayStatus()
       .then(function(res) {
         return res.json();
       })

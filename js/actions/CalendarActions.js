@@ -1,6 +1,5 @@
-var alt = require('../alt');
-var fetch = require('node-fetch');
-var host = require('../../config').host;
+import alt from '../alt'
+import utils from '../utils'
 
 var calendarActions = alt.createActions({
 
@@ -8,7 +7,7 @@ var calendarActions = alt.createActions({
     var self = this;
     console.log('calendar actions get()')
     return function(dispatch) {
-      fetch(host + '/calendar')
+      utils.getCalendar()
       .then(function(res) {
         return res.json();
       })

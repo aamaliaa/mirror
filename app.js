@@ -51,19 +51,29 @@ app.get('/schedule/:id', function (req, res) {
   mta.schedule(id)
   .then(function (result) {
     res.json(result);
-  });
+  })
+	.catch(function(err) {
+		console.log(err)
+		res.status(500)
+	});
 });
 
 app.get('/status/:type', function (req, res) {
   mta.status(req.params.type)
   .then(function (result) {
     res.json(result);
-  });
+  })
+	.catch(function(err) {
+		console.log(err);
+	});
 });
 
 app.get('/weather', function (req, res) {
   forecast.get([weather.latitude, weather.longitude], function (err, weather) {
-    if (err) return console.dir(err);
+    if (err) {
+			res.status(500).json({ error: true })
+			return console.dir(err);
+		}
     res.json(weather);
   });
 });

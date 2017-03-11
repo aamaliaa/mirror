@@ -32,8 +32,12 @@ var Weather = React.createClass({
   render: function() {
     console.log('weather render');
 
-    if (_.isEmpty(this.state.weather)) {
-      return <div>{this.state.error || ''}</div>;
+    if (_.isEmpty(this.state.weather) || this.state.error) {
+      return (
+        <div id="weather">
+          <div className="error">{this.state.error === 'Internal Server Error' ? 'Not connected to internet.' : (this.state.error || '')}</div>
+        </div>
+      );
     }
 
     var w = this.state.weather;

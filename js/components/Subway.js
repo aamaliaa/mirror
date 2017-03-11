@@ -41,8 +41,9 @@ var Subway = React.createClass({
     var schedule = this.state.times.schedule[config.stationId][direction].slice(0, 5);
     var timeToWalk = config.timeToWalk;
     var leave;
+    var times = [];
 
-    var times = schedule.map(function (t) {
+    times = schedule.map(function (t) {
       var arrivalFromNow = self.formatTime(t.arrivalTime);
       var timeToLeave = arrivalFromNow.numMin - timeToWalk;
 
@@ -75,12 +76,11 @@ var Subway = React.createClass({
 
   render: function() {
     console.log('subway render');
-    if (_.isEmpty(this.state.times)) {
-      return <div>{this.state.error || ''}</div>;
+    if (_.isEmpty(this.state.times) || this.state.error) {
+      return null;
     }
 
     var schedule = this.getTimes(config.direction);
-
     // if no times then don't show
     if (_.isEmpty(schedule.leave)) {
       return null;

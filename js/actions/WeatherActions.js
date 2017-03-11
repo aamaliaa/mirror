@@ -1,6 +1,5 @@
-var alt = require('../alt');
-var fetch = require('node-fetch');
-var host = require('../../config').host;
+import alt from '../alt'
+import utils from '../utils'
 
 var weatherActions = alt.createActions({
 
@@ -8,7 +7,7 @@ var weatherActions = alt.createActions({
     var self = this;
     console.log('weather actions get()')
     return function(dispatch) {
-      fetch(host + '/weather')
+      utils.getWeather()
       .then(function(res) {
         return res.json();
       })
@@ -26,7 +25,7 @@ var weatherActions = alt.createActions({
   },
 
   errorWeather: function(err) {
-    return err;
+    return err.message || err;
   }
 
 });

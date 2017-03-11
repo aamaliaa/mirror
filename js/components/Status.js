@@ -15,7 +15,7 @@ var Status = React.createClass({
   componentDidMount: function() {
     StatusActions.get();
     StatusStore.listen(this.onChange);
-    
+
     this._interval = setInterval(function() {
       StatusActions.get();
     }, config.delay);
@@ -49,6 +49,7 @@ var Status = React.createClass({
 
   parseStatus: function () {
     var s = this.state.status
+    console.log(s)
     var filters = config.regexFilters;
     var status = '';
     for (var i=0; i<s.length; i++) {

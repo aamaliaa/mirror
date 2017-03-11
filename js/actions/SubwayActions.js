@@ -1,7 +1,5 @@
-var alt = require('../alt');
-var fetch = require('node-fetch');
-var stationId = require('../config').subway.stationId;
-var host = require('../config').host;
+import alt from '../alt'
+import utils from '../utils'
 
 var subwayActions = alt.createActions({
 
@@ -9,7 +7,7 @@ var subwayActions = alt.createActions({
     var self = this;
     console.log('subway actions get()')
     return function(dispatch) {
-      fetch(host + '/schedule/' + stationId)
+      utils.getSubwayTimes()
       .then(function (res) {
         return res.json();
       })
