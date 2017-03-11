@@ -35,7 +35,7 @@
     "googleapis": "^2.1.7",
     "less": "^2.6.0",
     "moment": "^2.11.2",
-    "mta-gtfs": "^1.0.2",
+    "mta-gtfs": "^1.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-fa": "^4.0.0",
