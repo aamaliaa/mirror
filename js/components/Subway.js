@@ -1,116 +1,86 @@
-var React = require('react');
-var moment = require('moment');
-var _ = require('underscore');
-var config = require('../config').subway
+import React from 'react'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import _ from 'underscore'
 
-var SubwayActions = require('../actions/SubwayActions');
-var SubwayStore = require('../stores/SubwayStore');
+import utils from '../utils'
 
-var Subway = React.createClass({
+import { subway as config } from '../config'
+import { fetchSubwayTimes } from '../actions/subway'
 
-  getInitialState: function() {
-    return SubwayStore.getState();
-  },
-
-  componentDidMount: function() {
-    SubwayActions.getTimes();
-    SubwayStore.listen(this.onChange);
+class Subway extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchSubwayTimes())
 
     this._interval = setInterval(function() {
-      SubwayActions.getTimes();
-    }, config.delay);
-  },
+      dispatch(fetchSubwayTimes())
+    }, config.delay)
+  }
 
-  componentWillUnmount: function() {
-    SubwayStore.unlisten(this.onChange);
-    clearInterval(this._interval);
-  },
-
-  onChange: function (state) {
-    this.setState(state);
-  },
+  componentWillUnmount() {
+    clearInterval(this._interval)
+  }
 
   /**
    * formats API output for display
    * @param  {string} direction (either 'N' or 'S')
    * @return {object}           schedule
    */
-  getTimes: function(direction) {
-    var self = this;
-    var msg = 'Leave ';
-    var schedule = this.state.times.schedule[config.stationId][direction].slice(0, 5);
-    var timeToWalk = config.timeToWalk;
-    var leave;
-    var times = [];
+  getTimes = (direction) => {
+    const schedule = this.props.times.schedule[config.stationId][direction].slice(0, 5)
+    const timeToWalk = config.timeToWalk
+    let leave
 
-    times = schedule.map(function (t) {
-      var arrivalFromNow = self.formatTime(t.arrivalTime);
-      var timeToLeave = arrivalFromNow.numMin - timeToWalk;
+    const times = schedule.map(function (t) {
+      const { arrivalTime, routeId } = t
+      const arrivalFromNow = utils.formatTime(arrivalTime)
+      const timeToLeave = arrivalFromNow.numMin - timeToWalk
 
       if (arrivalFromNow.numMin && timeToLeave >= 0 && !leave) {
         leave = {
-          msg: msg + ( (timeToLeave === 0) ?
-            'now' :
-            ('within ' + timeToLeave + ' minute' + (timeToLeave > 1 ? 's' : '') ) ),
-          routeId: t.routeId
-        };
+          msg: `Leave ${
+            (timeToLeave === 0) ?
+              'now' :
+              `within ${timeToLeave} minute${timeToLeave > 1 ? 's' : ''}`
+          }`,
+          routeId
+        }
       }
-      return {
-        routeId: t.routeId,
-        arrivalTime: t.arrivalTime,
-        arrivalFromNow: arrivalFromNow
-      };
-    });
+      return { routeId, arrivalTime, arrivalFromNow }
+    })
 
-    return {
-      leave: leave,
-      times: times
-    };
-  },
+    return { leave, times }
+  }
 
-  renderSubway: function(routeId) {
+  renderSubway = (data) => {
+    const { routeId, msg } = data
     return (
-      <div className={'subway subway-' + routeId}>{routeId}</div>
-    );
-  },
+      <div className="message">
+        <div className={'subway subway-' + routeId}>{routeId}</div>
+        <div className="text">{msg}</div>
+      </div>
+    )
+  }
 
-  render: function() {
-    console.log('subway render');
-    if (_.isEmpty(this.state.times) || this.state.error) {
-      return null;
+  render() {
+    console.log('subway render')
+    if (_.isEmpty(this.props.times) || this.props.error) {
+      return null
     }
 
-    var schedule = this.getTimes(config.direction);
+    var schedule = this.getTimes(config.direction)
     // if no times then don't show
     if (_.isEmpty(schedule.leave)) {
-      return null;
+      return null
     }
 
     return (
       <div>
-        <div id="subway">
-          <div className="message">
-            {this.renderSubway(schedule.leave.routeId)}
-            <div className="text">{schedule.leave.msg}</div>
-          </div>
-        </div>
+        <div id="subway">{this.renderSubway(schedule.leave)}</div>
       </div>
-    );
-  },
-
-  formatTime: function(time) {
-    var numMin = null;
-    var time = moment(time, 'X').fromNow();
-    var found = time.match(/^in ([0-9]+) minutes/);
-    if (found && found[1]) {
-      numMin = found[1];
-    }
-
-    return {
-      str: time.replace('in ', '').replace('a minute', '1 minute'),
-      numMin: numMin
-    };
+    )
   }
-});
+}
 
-module.exports = Subway;
+export default connect(state => state.subway)(Subway)

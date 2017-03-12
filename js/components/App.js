@@ -1,99 +1,92 @@
-var React = require('react');
-var moment = require('moment');
-var mouseTrap = require('react-mousetrap').mouseTrap;
+import React from 'react'
+import { connect } from 'react-redux'
+import { mouseTrap } from 'react-mousetrap'
+import moment from 'moment'
 
-var Clock = require('./Clock');
-var Weather = require('./Weather');
-var Subway = require('./Subway');
-var Status = require('./Status');
-var Calendar = require('./Calendar');
-var Chores = require('./Chores');
+import { getAppLastUpdated } from '../actions/app'
 
-var AppActions = require('../actions/AppActions');
-var AppStore = require('../stores/AppStore');
+import Clock from './Clock'
+import Weather from './Weather'
+import Subway from './Subway'
+import Status from './Status'
+import Calendar from './Calendar'
+import Chores from './Chores'
 
-var utils = require('../utils');
+import utils from '../utils'
 
-var App = React.createClass({
-
-  getInitialState: function() {
-    return {
-      app: AppStore.getState(),
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
       date: new Date(),
       mainContent: ''
-    };
-  },
+    }
+  }
 
-  componentWillMount: function() {
-    this.props.bindShortcut('down', this.showIP);
-    this.props.bindShortcut('up', this.showLastUpdated);
-  },
+  componentWillMount() {
+    this.props.bindShortcut('down', this.showIP)
+    this.props.bindShortcut('up', this.showLastUpdated)
+  }
 
-  componentDidMount: function() {
-    AppStore.listen(this.onChange);
+  componentDidMount() {
+    const { dispatch } = this.props
 
     // version polling
     setInterval(function() {
-      AppActions.getLastUpdated();
-    }, 30000); // 30 secs
+      dispatch(getAppLastUpdated())
+    }, 30000) // 30 secs
 
     // clock
     setInterval(function() {
       this.setState({
         date: new Date()
-      });
-    }.bind(this), 1000);
-  },
+      })
+    }.bind(this), 1000)
+  }
 
-  componentWillUnmount: function() {
-    AppStore.unlisten(this.onChange);
-    this.props.unbindShortcut('down');
-  },
+  componentWillUnmount() {
+    this.props.unbindShortcut('down')
+  }
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     // new render only if minute updates (since we're not displaying seconds)
     // or main content has changed
     return (
       (nextState.date.getMinutes() !== this.state.date.getMinutes()) ||
       (nextState.mainContent !== this.state.mainContent)
-    );
-  },
+    )
+  }
 
-  onChange: function(state) {
-    this.setState({ app: state });
-  },
+  onChange = (state) => {
+    this.setState({ app: state })
+  }
 
-  showIP: function() {
-    var self = this;
-    utils.getLocalIP().then(function(ip) {
-      self.showContent(ip);
-    });
-  },
+  showIP = () => {
+    utils.getLocalIP()
+    .then(ip => this.showContent(ip))
+  }
 
-  showLastUpdated: function() {
-    var self = this;
-    this.showContent('last updated ' + moment(this.state.app.lastUpdated).fromNow());
-  },
+  showLastUpdated = () => {
+    this.showContent('last updated ' + moment(this.props.lastUpdated).fromNow())
+  }
 
-  showContent: function(mainContent) {
-    var self = this;
-    this.setState({ mainContent });
-    setTimeout(function() {
-      self.setState({ mainContent: '' });
-    }, 10000);
-  },
+  showContent = (mainContent) => {
+    this.setState({ mainContent })
+    setTimeout(() => this.setState({ mainContent: '' }), 10000)
+  }
 
-  render: function() {
-    console.log('----------------app render', this.state.date.getMinutes(), '------------------');
-    var error = null;
+  render() {
+    const { date, mainContent } = this.state
+    let error = null
+    console.log('----------------app render', date.getMinutes(), '------------------')
 
-    if (this.state.app.error) {
+    if (this.props.error) {
       error = (
         <div id="error">
           <i className="fa fa-exclamation-triangle" />
           CONNECTION ERROR
         </div>
-      );
+      )
     }
     return (
       <div>
@@ -102,17 +95,18 @@ var App = React.createClass({
           <Calendar />
         </div>
         <div className="right">
-          <Clock date={this.state.date} />
+          <Clock date={date} />
           <Subway />
-          <Chores date={this.state.date} />
+          <Chores date={date} />
         </div>
         {error}
         <div id="main">
-          {this.state.mainContent}
+          {mainContent}
         </div>
       </div>
-    );
+    )
   }
-});
 
-module.exports = mouseTrap(App);
+}
+
+export default connect(state => state.app)(mouseTrap(App))

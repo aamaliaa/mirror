@@ -1,42 +1,32 @@
-var React = require('react');
-var moment = require('moment');
-var _ = require('underscore');
-var config = require('../config').status;
+import React from 'react'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import _ from 'underscore'
 
-var StatusActions = require('../actions/StatusActions');
-var StatusStore = require('../stores/StatusStore');
+import { status as config } from '../config'
+import { fetchSubwayStatus } from '../actions/status'
 
-var Status = React.createClass({
-
-  getInitialState: function() {
-    return StatusStore.getState();
-  },
-
-  componentDidMount: function() {
-    StatusActions.get();
-    StatusStore.listen(this.onChange);
+class Status extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchSubwayStatus())
 
     this._interval = setInterval(function() {
-      StatusActions.get();
-    }, config.delay);
-  },
+      dispatch(fetchSubwayStatus())
+    }, config.delay)
+  }
 
-  componentWillUnmount: function() {
-    StatusStore.unlisten(this.onChange);
-    clearInterval(this._interval);
-  },
+  componentWillUnmount() {
+    clearInterval(this._interval)
+  }
 
-  onChange: function (state) {
-    this.setState(state);
-  },
+  render() {
+    console.log('status render')
 
-  render: function() {
-    console.log('status render');
-
-    var status = this.parseStatus();
+    var status = this.parseStatus()
 
     if (!status) {
-      return <div>{''}</div>;
+      return <div>{''}</div>
     }
 
     return (
@@ -44,40 +34,40 @@ var Status = React.createClass({
         <h3>Service Changes</h3>
         {status}
       </div>
-    );
-  },
+    )
+  }
 
-  parseStatus: function () {
-    var s = this.state.status
-    console.log(s)
-    var filters = config.regexFilters;
-    var status = '';
+  parseStatus() {
+    var s = this.props.status
+    var filters = config.regexFilters
+    var status = ''
     for (var i=0; i<s.length; i++) {
       for (var j=0; j<filters.length; j++) {
         if (filters[j].test(s[i].name) && s[i].status !== 'GOOD SERVICE') {
-          status += s[i].text;
+          status += s[i].text
         }
       }
     }
 
     if (status === '') {
-      return false;
+      return false
     }
 
     var text = status
       .replace(/<(br)\/?>/gi, '')
       .replace(/\[(.*?)\]/g, function(match) {
-        var route = match.match(/\[(.+?)\]/)[1];
-        return '<div class="subway subway-' + route + '">' + route + '</div>';
-      });
+        var route = match.match(/\[(.+?)\]/)[1]
+        return '<div class="subway subway-' + route + '">' + route + '</div>'
+      })
 
     return (
       <div
         className="status"
-        dangerouslySetInnerHTML={{__html: text}}></div>
-    );
+        dangerouslySetInnerHTML={{__html: text}}
+      />
+    )
   }
 
-});
+}
 
-module.exports = Status;
+export default connect(state => state.status)(Status)
