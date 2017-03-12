@@ -1,4 +1,4 @@
-require('style!../stylus/styles.styl');
+require('style-loader!../stylus/styles.styl');
 
 import React from 'react'
 import { render } from 'react-dom'

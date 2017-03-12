@@ -1,10 +1,13 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
 
   resolve: {
-    extensions: ['', '.js', '.styl'],
-    modulesDirectories: ['node_modules']
+    modules: [
+      'node_modules',
+    ],
+    extensions: ['.js', '.styl'],
   },
 
   entry: path.join(__dirname, 'js/app.js'),
@@ -18,7 +21,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: [ path.join(__dirname, 'js') ]
       },
       {
@@ -26,7 +29,7 @@ module.exports = {
         loader: 'style-loader!css-loader!stylus-loader',
         include: [ path.join(__dirname, 'stylus') ]
       },
-      { test: /\.json$/, loader: 'json' },
+      { test: /\.json$/, loader: 'json-loader' },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader?limit=10000&mimetype=application/font-woff'
