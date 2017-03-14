@@ -11,7 +11,7 @@ class Calendar extends React.Component {
     const { dispatch } = this.props
     dispatch(fetchCalendar())
 
-    this._interval = setInterval(function() {
+    this._interval = setInterval(() => {
       dispatch(fetchCalendar())
     }, config.delay)
   }
@@ -34,7 +34,7 @@ class Calendar extends React.Component {
       <div>
         <h5>{label}</h5>
         <ul>
-          {calendarItems.map(function(item) {
+          {calendarItems.map(item => {
             const { id, start: { dateTime: start }, end: { dateTime: end }, summary } = item
             let time = 'ALL DAY'
 
@@ -65,13 +65,13 @@ class Calendar extends React.Component {
     let todayItems = []
     let tomorrowItems = []
 
-    calendar.map(function(item) {
+    calendar.map(item => {
       if (this.isToday(item.start.dateTime) || this.isToday(item.end.dateTime)) {
         todayItems.push(item)
       } else {
         tomorrowItems.push(item)
       }
-    }, this)
+    })
 
     return (
       <div id="calendar">

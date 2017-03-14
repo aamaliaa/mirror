@@ -9,27 +9,23 @@ class Chores extends React.Component {
   }
 
   parseChores() {
-    var today = moment(this.props.date).format('dddd').toLowerCase()
-    var hour = this.props.date.getHours()
-    return _.filter(config[today], function(chore) {
-      if (chore.timeRange) {
-        if (hour >= chore.timeRange[0] && hour <= chore.timeRange[1]) {
-          return true
-        } else {
-          return false
-        }
-      } else {
+    const today = moment(this.props.date).format('dddd').toLowerCase()
+    const hour = this.props.date.getHours()
+    return config[today].filter(chore => {
+      if (!chore.timeRange) {
         return true
       }
+
+      return hour >= chore.timeRange[0] && hour <= chore.timeRange[1]
     })
   }
 
   render() {
-    var chores = this.parseChores()
+    const chores = this.parseChores()
 
     return (
       <div id="chores">
-        {chores.map(function(c, i) {
+        {chores.map((c, i) => {
           return (
             <div className="chore" key={i}>
               <i className={'fa fa-' + c.icon} />

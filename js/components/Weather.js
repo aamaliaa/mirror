@@ -9,7 +9,7 @@ class Weather extends React.Component {
     const { dispatch } = this.props
     dispatch(fetchWeather())
 
-    this._interval = setInterval(function() {
+    this._interval = setInterval(() => {
       dispatch(fetchWeather())
     }, config.delay)
   }

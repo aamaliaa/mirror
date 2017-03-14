@@ -32,16 +32,16 @@ class App extends React.Component {
     const { dispatch } = this.props
 
     // version polling
-    setInterval(function() {
+    setInterval(() => {
       dispatch(getAppLastUpdated())
     }, 30000) // 30 secs
 
     // clock
-    setInterval(function() {
+    setInterval(() => {
       this.setState({
         date: new Date()
       })
-    }.bind(this), 1000)
+    }, 1000)
   }
 
   componentWillUnmount() {

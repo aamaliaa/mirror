@@ -13,7 +13,7 @@ class Subway extends React.Component {
     const { dispatch } = this.props
     dispatch(fetchSubwayTimes())
 
-    this._interval = setInterval(function() {
+    this._interval = setInterval(() => {
       dispatch(fetchSubwayTimes())
     }, config.delay)
   }
@@ -32,7 +32,7 @@ class Subway extends React.Component {
     const timeToWalk = config.timeToWalk
     let leave
 
-    const times = schedule.map(function (t) {
+    const times = schedule.map(t => {
       const { arrivalTime, routeId } = t
       const arrivalFromNow = utils.formatTime(arrivalTime)
       const timeToLeave = arrivalFromNow.numMin - timeToWalk
@@ -65,7 +65,9 @@ class Subway extends React.Component {
 
   render() {
     console.log('subway render')
-    if (_.isEmpty(this.props.times) || this.props.error) {
+    const { times, error } = this.props
+
+    if (_.isEmpty(times) || error) {
       return null
     }
 

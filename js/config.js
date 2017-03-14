@@ -1,4 +1,4 @@
-import _ from 'underscore'
 import config from '../config'
 
-module.exports = _.omit(config, 'api');
+const { api, ...rest } = config
+module.exports = rest

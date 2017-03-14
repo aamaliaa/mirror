@@ -11,7 +11,7 @@ class Status extends React.Component {
     const { dispatch } = this.props
     dispatch(fetchSubwayStatus())
 
-    this._interval = setInterval(function() {
+    this._interval = setInterval(() => {
       dispatch(fetchSubwayStatus())
     }, config.delay)
   }
@@ -23,7 +23,7 @@ class Status extends React.Component {
   render() {
     console.log('status render')
 
-    var status = this.parseStatus()
+    const status = this.parseStatus()
 
     if (!status) {
       return <div>{''}</div>
@@ -38,25 +38,25 @@ class Status extends React.Component {
   }
 
   parseStatus() {
-    var s = this.props.status
-    var filters = config.regexFilters
-    var status = ''
-    for (var i=0; i<s.length; i++) {
-      for (var j=0; j<filters.length; j++) {
-        if (filters[j].test(s[i].name) && s[i].status !== 'GOOD SERVICE') {
-          status += s[i].text
+    const { status } = this.props
+    const filters = config.regexFilters
+    let s = ''
+    for (let i=0; i<status.length; i++) {
+      for (let j=0; j<filters.length; j++) {
+        if (filters[j].test(status[i].name) && status[i].status !== 'GOOD SERVICE') {
+          s += status[i].text
         }
       }
     }
 
-    if (status === '') {
+    if (s === '') {
       return false
     }
 
-    var text = status
+    const text = s
       .replace(/<(br)\/?>/gi, '')
-      .replace(/\[(.*?)\]/g, function(match) {
-        var route = match.match(/\[(.+?)\]/)[1]
+      .replace(/\[(.*?)\]/g, match => {
+        const route = match.match(/\[(.+?)\]/)[1]
         return '<div class="subway subway-' + route + '">' + route + '</div>'
       })
 
