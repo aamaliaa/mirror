@@ -101,6 +101,7 @@ class App extends React.Component {
         </div>
         {error}
         <div id="main">
+          <Status date={date} />
           {mainContent}
         </div>
       </div>
