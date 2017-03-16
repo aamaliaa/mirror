@@ -1,93 +1,86 @@
-var React = require('react');
-var moment = require('moment');
-var _ = require('underscore');
-var config = require('../config').calendar;
+import React from 'react'
+import { connect } from 'react-redux'
+import moment from 'moment'
+import _ from 'underscore'
+import { calendar as config } from '../config'
 
-var CalendarActions = require('../actions/CalendarActions');
-var CalendarStore = require('../stores/CalendarStore');
+import { fetchCalendar } from '../actions/calendar'
 
-var Calendar = React.createClass({
+class Calendar extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchCalendar())
 
-  getInitialState: function() {
-    return CalendarStore.getState();
-  },
+    this._interval = setInterval(() => {
+      dispatch(fetchCalendar())
+    }, config.delay)
+  }
 
-  componentDidMount: function() {
-    CalendarActions.get();
-    CalendarStore.listen(this.onChange);
-    this._interval = setInterval(function() {
-      CalendarActions.get();
-    }, config.delay);
-  },
+  componentWillUnmount() {
+    clearInterval(this._interval)
+  }
 
-  componentWillUnmount: function() {
-    CalendarStore.unlisten(this.onChange);
-    clearInterval(this._interval);
-  },
+  isToday(dateTime) {
+    const now = moment()
+    return dateTime !== undefined && moment(dateTime).date() === now.date()
+  }
 
-  onChange: function(state) {
-    this.setState(state);
-  },
-
-  isToday: function(dateTime) {
-    var now = moment();
-    return moment(dateTime).date() === now.date();
-  },
-
-  renderItems: function(calendarItems, label) {
+  renderItems(calendarItems, label) {
     if (_.isEmpty(calendarItems)) {
-      return null;
+      return null
     }
 
     return (
       <div>
         <h5>{label}</h5>
         <ul>
-          {calendarItems.map(function(item) {
-            var time = 'ALL DAY';
+          {calendarItems.map(item => {
+            const { id, start: { dateTime: start }, end: { dateTime: end }, summary } = item
+            let time = 'ALL DAY'
 
-            if (item.start.dateTime && item.end.dateTime) {
-              time = moment(item.start.dateTime).format('LT') + '-' + moment(item.end.dateTime).format('LT');
-              time = time.replace(/(\s+|:00)/g, '');
+            if (start && end) {
+              time = moment(start).format('LT') + '-' + moment(end).format('LT')
+              time = time.replace(/(\s+|:00)/g, '')
             }
 
             return (
-              <li key={item.id}>
+              <li key={id}>
                 <i className="fa fa-calendar-o" />
-                <span className="time">{time}</span>{item.summary}
+                <span className="time">{time}</span>{summary}
               </li>
-            );
+            )
           })}
         </ul>
       </div>
-    );
-  },
+    )
+  }
 
-  render: function() {
-    if (_.isEmpty(this.state.calendar)) {
-      return false;
+  render() {
+    const { calendar } = this.props
+    if (_.isEmpty(calendar)) {
+      return false
     }
 
-    var now = moment();
-    var todayItems = [];
-    var tomorrowItems = [];
+    const now = moment()
+    let todayItems = []
+    let tomorrowItems = []
 
-    this.state.calendar.map(function(item) {
+    calendar.map(item => {
       if (this.isToday(item.start.dateTime) || this.isToday(item.end.dateTime)) {
-        todayItems.push(item);
+        todayItems.push(item)
       } else {
-        tomorrowItems.push(item);
+        tomorrowItems.push(item)
       }
-    }, this);
+    })
 
     return (
       <div id="calendar">
         {this.renderItems(todayItems, 'today')}
         {this.renderItems(tomorrowItems, 'tomorrow')}
       </div>
-    );
+    )
   }
 
-});
+}
 
-module.exports = Calendar;
+export default connect(state => state.calendar)(Calendar)

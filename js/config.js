@@ -1,4 +1,4 @@
-var _ = require('underscore');
-var config = require('../config');
+import config from '../config'
 
-module.exports = _.omit(config, 'api');
+const { api, ...rest } = config
+module.exports = rest

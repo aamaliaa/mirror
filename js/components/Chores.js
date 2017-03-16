@@ -1,51 +1,45 @@
-var React = require('react');
-var _ = require('underscore');
-var moment = require('moment');
-var config = require('../config').chores;
+import React from 'react'
+import _ from 'underscore'
+import moment from 'moment'
+import { chores as config } from '../config'
 
-var Chores = React.createClass({
+class Chores extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.date.getHours() !== this.props.date.getHours()
+  }
 
-  propTypes: {
-    date: React.PropTypes.object
-  },
-
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return nextProps.date.getHours() !== this.props.date.getHours();
-  },
-
-  parseChores: function() {
-    var today = moment(this.props.date).format('dddd').toLowerCase();
-    var hour = this.props.date.getHours();
-    return _.filter(config[today], function(chore) {
-      if (chore.timeRange) {
-        if (hour >= chore.timeRange[0] && hour <= chore.timeRange[1]) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
+  parseChores() {
+    const today = moment(this.props.date).format('dddd').toLowerCase()
+    const hour = this.props.date.getHours()
+    return config[today].filter(chore => {
+      if (!chore.timeRange) {
+        return true
       }
-    });
-  },
 
-  render: function() {
-    var chores = this.parseChores();
+      return hour >= chore.timeRange[0] && hour <= chore.timeRange[1]
+    })
+  }
+
+  render() {
+    const chores = this.parseChores()
 
     return (
       <div id="chores">
-        {chores.map(function(c, i) {
+        {chores.map((c, i) => {
           return (
             <div className="chore" key={i}>
               <i className={'fa fa-' + c.icon} />
               {c.text}
             </div>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
+}
 
-});
+Chores.propTypes = {
+  date: React.PropTypes.object,
+}
 
-module.exports = Chores;
+export default Chores

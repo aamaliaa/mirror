@@ -16,7 +16,10 @@ module.exports = {
     delay: 300000, // poll API every 5 min
     regexFilters: [
       /[23]/
-    ]
+    ],
+    trains: [ '2' ],
+    dayRange: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    timeRange: [6, 10],
   },
   weather: {
     delay: 300000, // 5 min

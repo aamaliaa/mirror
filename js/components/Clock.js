@@ -1,17 +1,17 @@
-var React = require('react');
-var moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-var Clock = React.createClass({
+class Clock extends React.Component {
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return nextProps.date.getMinutes() !== this.props.date.getMinutes();
-  },
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.date.getMinutes() !== this.props.date.getMinutes()
+  }
 
-  render: function() {
-    console.log('clock render');
+  render() {
+    console.log('clock render')
 
-    var d = this.props.date;
-    var m = moment(d);
+    const d = this.props.date
+    const m = moment(d)
     return(
       <div id="clock">
         <div className="container">
@@ -24,6 +24,6 @@ var Clock = React.createClass({
     )
   }
 
-});
+}
 
-module.exports = Clock;
+export default Clock

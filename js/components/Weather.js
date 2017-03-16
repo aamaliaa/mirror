@@ -1,66 +1,53 @@
-var React = require('react');
-var _ = require('underscore');
-var config = require('../config').weather;
+import React from 'react'
+import { connect } from 'react-redux'
+import _ from 'underscore'
+import { weather as config } from '../config'
+import { fetchWeather } from '../actions/weather'
 
-var WeatherActions = require('../actions/WeatherActions');
-var WeatherStore = require('../stores/WeatherStore');
+class Weather extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(fetchWeather())
 
-var Weather = React.createClass({
+    this._interval = setInterval(() => {
+      dispatch(fetchWeather())
+    }, config.delay)
+  }
 
-  getInitialState: function() {
-    return WeatherStore.getState();
-  },
+  componentWillUnmount() {
+    clearTimeout(this._interval)
+  }
 
-  componentDidMount: function() {
-    WeatherActions.get();
-    WeatherStore.listen(this.onChange);
+  render() {
+    console.log('weather render')
 
-    this._interval = setInterval(function() {
-      WeatherActions.get();
-    }, config.delay);
-  },
-
-  componentWillUnmount: function() {
-    WeatherStore.unlisten(this.onChange);
-    clearTimeout(this._interval);
-  },
-
-  onChange: function (state) {
-    this.setState(state);
-  },
-
-  render: function() {
-    console.log('weather render');
-
-    if (_.isEmpty(this.state.weather) || this.state.error) {
+    if (_.isEmpty(this.props.weather) || this.props.error) {
       return (
         <div id="weather">
-          <div className="error">{this.state.error === 'Internal Server Error' ? 'Not connected to internet.' : (this.state.error || '')}</div>
+          <div className="error">{this.props.error === 'Internal Server Error' ? 'Not connected to internet.' : (this.props.error || '')}</div>
         </div>
-      );
+      )
     }
 
-    var w = this.state.weather;
-    var temp = Math.round(w.currently.temperature);
-    var tempMax = Math.round(w.daily.data[0].temperatureMax);
-    var tempMin = Math.round(w.daily.data[0].temperatureMin);
-    var feelsLike = Math.round(w.currently.apparentTemperature);
-    var summary = w.hourly.summary;
-    var precipitation = Math.round(w.daily.data[0].precipProbability * 100)
-    var currentIcon = w.currently.icon;
+    const { currently, daily: { data: [ dailyData ] }, hourly: { summary } } = this.props.weather
+    const temp = Math.round(currently.temperature)
+    const tempMax = Math.round(dailyData.temperatureMax)
+    const tempMin = Math.round(dailyData.temperatureMin)
+    const feelsLike = Math.round(currently.apparentTemperature)
+    const precipitation = Math.round(dailyData.precipProbability * 100)
 
     return (
       <div id="weather">
         <div className="currently">
           <div className="temperature">{temp + '°'}</div>
           <div className="icon-wrapper">
-            <div className={"weather-icon " + currentIcon} />
+            <div className={"weather-icon " + currently.icon} />
             <div className="high-low">
               <span className="high">{`${tempMax}°`}</span>&nbsp;&nbsp;<span className="low">{`${tempMin}°`}</span>
             </div>
           </div>
         </div>
-        <div className="feelsLike">Feels like {feelsLike}&deg;</div>
+        <div className="feelsLike">Feels like {feelsLike}°</div>
         <div className="summary">{summary}</div>
         {precipitation > 0 && (
           <div className="precipitation">
@@ -68,9 +55,9 @@ var Weather = React.createClass({
           </div>
         )}
       </div>
-    );
+    )
   }
 
-});
+}
 
-module.exports = Weather;
+export default connect(state => state.weather)(Weather)
