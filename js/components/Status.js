@@ -17,6 +17,10 @@ class Status extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.checkTime(this.props.date)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.status !== this.props.status) {
       this.parseStatus(nextProps)
@@ -100,18 +104,22 @@ class Status extends React.Component {
     status.map(s => {
       filters.map(f => {
         if (f.test(s.name) && s.status !== 'GOOD SERVICE') {
-          statuses.push({
-            timestamp: moment(`${s.Date.trim()} ${s.Time.trim()}`, 'MM-DD-YYYY hh:mmA').format('X'),
-            status: s.text
-              .replace(/<(br)\/?>/gi, '')
-              .split(/<p>|<\/p>/i)
-              .map(i => i.trim())
-              .filter(i => {
-                const matches = i.match(/\[(.*?)\]/g)
-                if (i === '') return false
-                if (matches && matches.length > 0 && matches.some(v => trains.includes(v))) return true
-              })
-          })
+          const entries = s.text
+            .replace(/<(br)\/?>/gi, '')
+            .split(/<p>|<\/p>/i)
+            .map(i => i.trim())
+            .filter(i => {
+              const matches = i.match(/\[(.*?)\]/g)
+              if (i === '') return false
+              if (matches && matches.length > 0 && matches.some(v => trains.includes(v))) return true
+            })
+
+          if (entries.length) {
+            statuses.push({
+              timestamp: moment(`${s.Date.trim()} ${s.Time.trim()}`, 'MM-DD-YYYY hh:mmA').format('X'),
+              status: entries,
+            })
+          }
         }
       })
     })
