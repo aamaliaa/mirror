@@ -17,7 +17,9 @@ module.exports = {
     regexFilters: [
       /[23]/
     ],
-    trains: [ '2' ]
+    trains: [ '2' ],
+    dayRange: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    timeRange: [6, 10],
   },
   weather: {
     delay: 300000, // 5 min
