@@ -98,10 +98,10 @@ class App extends React.Component {
           <Clock date={date} />
           <Subway />
           <Chores date={date} />
+          <Status date={date} />
         </div>
         {error}
         <div id="main">
-          <Status date={date} />
           {mainContent}
         </div>
       </div>

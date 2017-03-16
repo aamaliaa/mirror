@@ -78,17 +78,17 @@ class Status extends React.Component {
     const status = statuses[idx]
 
     return (
-      <div className="status">
-        <ReactCSSTransitionGroup
-          transitionName="carousel"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-        >
-          <div className="item">
+      <div id="status">
+        <h5>MTA DELAYS <span className="time">updated {moment(status.timestamp, 'X').fromNow()}</span></h5>
+        <div className="item">
+          <ReactCSSTransitionGroup
+            transitionName="carousel"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+          >
             {status.status.map((s, j) => <StatusEntry key={j} entry={s} />)}
-            <span className="timestamp">{moment(status.timestamp, 'X').fromNow()}</span>
-          </div>
-        </ReactCSSTransitionGroup>
+          </ReactCSSTransitionGroup>
+        </div>
       </div>
     )
   }
@@ -105,11 +105,12 @@ class Status extends React.Component {
       filters.map(f => {
         if (f.test(s.name) && s.status !== 'GOOD SERVICE') {
           const entries = s.text
-            .replace(/<(br)\/?>/gi, '')
-            .split(/<p>|<\/p>/i)
-            .map(i => i.trim())
+            .replace(/<(br)\/?>/gi, '') // no <br> tags
+            .replace(/<b>|<\/b>/gi, '') // no <b> tags
+            .split(/<p>|<\/p>/i)        // split <p>'s into array
+            .map(i => i.trim())         // trim errything
             .filter(i => {
-              const matches = i.match(/\[(.*?)\]/g)
+              const matches = i.match(/\[(.*?)\]/g) // match subway symbols (i.e. [2] or [L])
               if (i === '') return false
               if (matches && matches.length > 0 && matches.some(v => trains.includes(v))) return true
             })

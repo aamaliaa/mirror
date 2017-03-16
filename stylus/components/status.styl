@@ -1,9 +1,21 @@
-.status
-  display: flex
-  justify-content: center
-  text-align: left
-  margin: 20px 0 5px 0
-  font-size: 14px
+#status
+  width: 450px
+  margin-top: auto !important
+  margin-left: auto !important
+
+  h5
+    font-size: 0.5em
+    text-transform: uppercase
+    margin: 5px 0
+
+    .time
+      float: right
+      font-style: italic
+      color: #777
+      margin-left: 5px
+      vertical-align: middle
+      font-weight: normal
+      text-transform: lowercase
 
   a
     display: block
@@ -12,18 +24,18 @@
   .item
     display: flex
     flex-direction: column
-    margin: 10px
+    font-size: 0.8em
 
-  .entry
-    margin-top: 5px
-
-  .timestamp
-    margin-bottom: -10px
-    font-size: 11px
-    color: #777
-    align-self: flex-end
-
-  .TitleServiceChange,
   .DateStyle,
+  .TitleDelay,
+  .TitleServiceChange,
+  .TitlePlannedWork,
   .plannedWorkDetail
     display: none
+
+.carousel-appear
+  opacity: 0.01
+
+.carousel-appear.carousel-appear-active
+  opacity: 1
+  transition: opacity .5s ease-in
