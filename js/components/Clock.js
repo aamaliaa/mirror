@@ -8,8 +8,6 @@ class Clock extends React.Component {
   }
 
   render() {
-    console.log('clock render')
-
     const d = this.props.date
     const m = moment(d)
     return(

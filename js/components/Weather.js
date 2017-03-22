@@ -19,8 +19,6 @@ class Weather extends React.Component {
   }
 
   render() {
-    console.log('weather render')
-
     if (_.isEmpty(this.props.weather) || this.props.error) {
       return (
         <div id="weather">

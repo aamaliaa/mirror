@@ -78,8 +78,6 @@ class App extends React.Component {
   render() {
     const { date, mainContent } = this.state
     let error = null
-    console.log('----------------app render', date.getMinutes(), '------------------')
-
     if (this.props.error) {
       error = (
         <div id="error">

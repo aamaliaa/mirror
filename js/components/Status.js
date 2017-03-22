@@ -71,7 +71,6 @@ class Status extends React.Component {
   }
 
   render() {
-    console.log('status render')
     const { statuses, idx } = this.state
 
     if (statuses.length < 1) return null

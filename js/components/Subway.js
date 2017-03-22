@@ -64,7 +64,6 @@ class Subway extends React.Component {
   }
 
   render() {
-    console.log('subway render')
     const { times, error } = this.props
 
     if (_.isEmpty(times) || error) {
