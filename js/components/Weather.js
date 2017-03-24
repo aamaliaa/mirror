@@ -22,7 +22,7 @@ class Weather extends React.Component {
     if (_.isEmpty(this.props.weather) || this.props.error) {
       return (
         <div id="weather">
-          <div className="error">{this.props.error === 'Internal Server Error' ? 'Not connected to internet.' : (this.props.error || '')}</div>
+          <div className="error">{this.props.error && this.props.error.message === 'Internal Server Error' ? 'Weather offline.' : (this.props.error && this.props.error.message || '')}</div>
         </div>
       )
     }
