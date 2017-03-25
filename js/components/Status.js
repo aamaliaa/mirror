@@ -71,9 +71,9 @@ class Status extends React.Component {
   }
 
   render() {
-    const { statuses, idx } = this.state
+    const { show, statuses, idx } = this.state
 
-    if (statuses.length < 1) return null
+    if (!show || statuses.length < 1) return null
     const status = statuses[idx]
 
     return (
