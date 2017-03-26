@@ -104,12 +104,13 @@ class Status extends React.Component {
       filters.map(f => {
         if (f.test(s.name) && s.status !== 'GOOD SERVICE') {
           const entries = s.text
-            .replace(/<(br)\/?>/gi, '') // no <br> tags
-            .replace(/<b>|<\/b>/gi, '') // no <b> tags
-            .split(/<p>|<\/p>/i)        // split <p>'s into array
-            .map(i => i.trim())         // trim errything
+            .replace(/<[br][^>]*>/gi, '') // no <br> tags
+            .replace(/<b>|<\/b>/gi, '')   // no <b> tags
+            .replace(/(\[FF\])/gi, '')    // no Fix & Fortify
+            .split(/<p>|<\/p>/i)          // split <p>'s into array
+            .map(i => i.trim())           // trim errything
             .filter(i => {
-              const matches = i.match(/\[(.*?)\]/g) // match subway symbols (i.e. [2] or [L])
+              const matches = i.match(/\[([A-Z0-9]?)\]/g) // match subway symbols (i.e. [2] or [L])
               if (i === '') return false
               if (matches && matches.length > 0 && matches.some(v => trains.includes(v))) return true
             })
@@ -130,7 +131,7 @@ class Status extends React.Component {
 }
 
 const StatusEntry = (props) => {
-  const entry = props.entry.replace(/\[(.*?)\]/g, match => {
+  const entry = props.entry.replace(/\[([A-Z0-9]?)\]/g, match => {
     const route = match.match(/\[(.+?)\]/)[1]
     return '<span class="subway subway-' + route + '">' + route + '</span>'
   })
