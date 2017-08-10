@@ -36,7 +36,7 @@
     "google-auth-library": "0.10.0",
     "googleapis": "18.0.0",
     "moment": "^2.11.2",
-    "mta-gtfs": "^1.0.3",
+    "mta-gtfs": "^1.0.4",
     "react": "15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "15.4.2",
