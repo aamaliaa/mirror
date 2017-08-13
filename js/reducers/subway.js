@@ -5,14 +5,13 @@ import {
 } from '../actions/subway'
 
 function subway(state = {
-  times: {},
   error: null,
 }, action) {
   switch (action.type) {
     case RECEIVE_SUBWAY_TIMES:
       return {
         ...state,
-        times: action.times,
+        [`${action.feedId}_${action.stationId}`]: action.times.schedule[action.stationId],
         error: null,
       }
     case ERROR_SUBWAY_TIMES:

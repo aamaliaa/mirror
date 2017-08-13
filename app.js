@@ -30,7 +30,7 @@ var forecast = new Forecast({
 });
 
 var mta = new Mta({
-  key: mtaKey
+  key: mtaKey,
 });
 
 app.use(express.static(path.join(__dirname, './public')));
@@ -46,9 +46,8 @@ app.get('/lastUpdated', function(req, res) {
 	})
 });
 
-app.get('/schedule/:id', function (req, res) {
-  var id = parseInt(req.params.id, 10);
-  mta.schedule(id)
+app.get('/schedule/:feedId/:stopId', function (req, res) {
+  mta.schedule(req.params.stopId, req.params.feedId)
   .then(function (result) {
     res.json(result);
   })

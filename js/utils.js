@@ -11,8 +11,8 @@ const utils = {
     return get(`${host}/weather`)
   },
 
-  getSubwayTimes: () => {
-    return get(`${host}/schedule/${subway.stationId}`)
+  getSubwayTimes: (feedId, stopId) => {
+    return get(`${host}/schedule/${feedId}/${stopId}`)
   },
 
   getSubwayStatus: () => {

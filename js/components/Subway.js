@@ -22,16 +22,9 @@ class Subway extends React.Component {
     clearInterval(this._interval)
   }
 
-  /**
-   * formats API output for display
-   * @param  {string} direction (either 'N' or 'S')
-   * @return {object}           schedule
-   */
-  getTimes = (direction) => {
-    const schedule = this.props.times.schedule[config.stationId][direction].slice(0, 5)
-    const timeToWalk = config.timeToWalk
+  getTimes = (stationId, feedId, direction, timeToWalk) => {
+    const schedule = (this.props[`${feedId}_${stationId}`] && this.props[`${feedId}_${stationId}`][direction].slice(0, 5)) || []
     let leave
-
     const times = schedule.map(t => {
       const { arrivalTime, routeId } = t
       const arrivalFromNow = utils.formatTime(arrivalTime)
@@ -64,21 +57,21 @@ class Subway extends React.Component {
   }
 
   render() {
-    const { times, error } = this.props
-
-    if (_.isEmpty(times) || error) {
-      return null
-    }
-
-    var schedule = this.getTimes(config.direction)
-    // if no times then don't show
-    if (_.isEmpty(schedule.leave)) {
+    const { error } = this.props
+    if (_.isEmpty(config.stops) || error) {
       return null
     }
 
     return (
       <div>
-        <div id="subway">{this.renderSubway(schedule.leave)}</div>
+        {config.stops.map(({ stationId, feedId, direction, timeToWalk }) => {
+          var schedule = this.getTimes(stationId, feedId, direction, timeToWalk)
+          // if no times then don't show
+          if (_.isEmpty(schedule.leave)) {
+            return null
+          }
+          return <div key={`${feedId}_${stationId}`} id="subway">{this.renderSubway(schedule.leave)}</div>
+        })}
       </div>
     )
   }

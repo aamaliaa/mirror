@@ -8,9 +8,13 @@ module.exports = {
   },
   subway: {
     delay: 30000, // poll API every 30 secs
-    timeToWalk: 5, // 5 min, the time it takes to walk to your subway stop
-    stationId: 127, // subway station id
-    direction: 'S' // "S" southbound or "N" northbound
+    stops: [
+      {
+        timeToWalk: 5, // 5 min, the time it takes to walk to your subway stop
+        stationId: 127, // subway station id
+        direction: 'S' // "S" southbound or "N" northbound
+      },
+    ],
   },
   status: {
     delay: 300000, // poll API every 5 min

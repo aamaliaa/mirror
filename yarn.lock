@@ -2498,9 +2498,9 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-mta-gtfs@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/mta-gtfs/-/mta-gtfs-1.0.4.tgz#4c41b380df6ee003d810193035b2442d6b849d4e"
+mta-gtfs@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mta-gtfs/-/mta-gtfs-1.1.0.tgz#1bdef90f2f16c8d0e87ea7a3657ad07fdc92d71a"
   dependencies:
     csv-parse "^1.0.1"
     node-fetch "^1.3.3"
