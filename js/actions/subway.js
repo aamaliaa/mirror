@@ -1,5 +1,11 @@
+import _ from 'underscore'
 import utils from '../utils'
-import { subway as config } from '../config'
+import { subway as config, api } from '../../config'
+import Mta from 'mta-gtfs'
+
+const mta = new Mta({
+  key: api.mtaKey,
+})
 
 export const REQUEST_SUBWAY_TIMES = 'REQUEST_SUBWAY_TIMES'
 export const RECEIVE_SUBWAY_TIMES = 'RECEIVE_SUBWAY_TIMES'
@@ -19,12 +25,14 @@ export function errorSubwayTimes(error) {
 
 export function fetchSubwayTimes() {
   return (dispatch, getState) => {
-    config.stops.forEach(s => {
-      dispatch(requestSubwayTimes(s.feedId, s.stationId))
-      return utils.getSubwayTimes(s.feedId, s.stationId)
-        .then(res => res.json())
-        .then(json => dispatch(receiveSubwayTimes(s.feedId, s.stationId, json)))
-        .catch(err => dispatch(errorSubwayTimes(err)))
+    config.stops.forEach(({ feedId, stationId }) => {
+      dispatch(requestSubwayTimes(feedId, stationId))
+      return mta.schedule(stationId, feedId)
+      .then(data => {
+        if (_.isEmpty(data)) return
+        dispatch(receiveSubwayTimes(feedId, stationId, data))
+      })
+      .catch(err => dispatch(errorSubwayTimes(err)))
     })
   }
 }

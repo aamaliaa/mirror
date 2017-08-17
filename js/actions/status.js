@@ -1,4 +1,7 @@
 import utils from '../utils'
+import Mta from 'mta-gtfs'
+
+const mta = new Mta()
 
 export const REQUEST_SUBWAY_STATUS = 'REQUEST_SUBWAY_STATUS'
 export const RECEIVE_SUBWAY_STATUS = 'RECEIVE_SUBWAY_STATUS'
@@ -19,9 +22,8 @@ export function errorSubwayStatus(error) {
 export function fetchSubwayStatus() {
   return (dispatch, getState) => {
     dispatch(requestSubwayStatus())
-    return utils.getSubwayStatus()
-      .then(res => res.json())
-      .then(json => dispatch(receiveSubwayStatus(json)))
+    return mta.status('subway')
+      .then(data => dispatch(receiveSubwayStatus(data)))
       .catch(err => dispatch(errorSubwayStatus(err)))
   }
 }

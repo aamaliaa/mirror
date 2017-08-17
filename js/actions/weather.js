@@ -1,4 +1,21 @@
+import Forecast from 'forecast'
 import utils from '../utils'
+import { weather as config, api } from '../../config'
+
+const API_KEY = api.forecastKey
+const LATITUDE = config.latitude
+const LONGITUDE = config.longitude
+
+const forecast = new Forecast({
+	service: 'forecast.io',
+	key: API_KEY,
+	units: 'fahrenheit',
+	cache: true,
+	ttl: {
+		minutes: 15,
+		seconds: 0
+	},
+});
 
 export const REQUEST_WEATHER = 'REQUEST_WEATHER'
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER'
@@ -19,9 +36,13 @@ export function errorWeather(error) {
 export function fetchWeather() {
   return dispatch => {
     dispatch(requestWeather())
-    return utils.getWeather()
-      .then(res => res.json())
-      .then(json => dispatch(receiveWeather(json)))
-      .catch(err => dispatch(errorWeather(err)))
+    return new Promise((resolve, reject) => {
+      forecast.get([LATITUDE, LONGITUDE], (err, weather) => {
+        if (err) return reject(err)
+        resolve(weather)
+      })
+    })
+    .then(data => dispatch(receiveWeather(data)))
+    .catch(err => dispatch(errorWeather(err)))
   }
 }

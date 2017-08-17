@@ -1,3 +1,4 @@
+import fs from 'fs'
 import utils from '../utils'
 
 /*
@@ -17,11 +18,19 @@ export function setAppError(error) {
   return { type: SET_APP_ERROR, error }
 }
 
+const checkLastUpdated = () => {
+  return new Promise((resolve, reject) => {
+    fs.stat(__dirname + '/dist/bundle.js', function(err, stats) {
+      if (err) return reject(err)
+  		resolve({ lastUpdated: stats.ctime })
+  	})
+  })
+}
+
 export function getAppLastUpdated() {
   return (dispatch, getState) => {
-    return utils.getLastUpdated()
-      .then(res => res.json())
-      .then(json => dispatch(setAppLastUpdated(json.lastUpdated)))
+    return checkLastUpdated()
+      .then(data => dispatch(setAppLastUpdated(data.lastUpdated)))
       .catch(err => dispatch(setAppError(err)))
   }
 }

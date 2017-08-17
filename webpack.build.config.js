@@ -1,20 +1,31 @@
 var path = require('path');
 var webpack = require('webpack');
 
+const SRC_DIR = path.resolve(__dirname, 'js');
+const OUTPUT_DIR = path.resolve(__dirname, 'dist');
+
 module.exports = {
+
+  entry: SRC_DIR + '/app.js',
+
+  output: {
+    path: OUTPUT_DIR,
+    publicPath: '/',
+    filename: 'bundle.js'
+  },
+
+  target: 'electron-renderer',
+
+  node: {
+     __dirname: true
+   },
 
   resolve: {
     modules: [
       'node_modules',
     ],
     extensions: ['.js', '.styl'],
-  },
-
-  entry: path.join(__dirname, 'js/app.js'),
-
-  output: {
-    path: path.join(__dirname, 'public'),
-    filename: 'js/[name].js'
+    symlinks: true,
   },
 
   module: {
@@ -39,6 +50,23 @@ module.exports = {
         loader: 'url-loader'
       },
     ]
-  }
+  },
+
+  externals: {
+    googleapis: 'commonjs googleapis',
+    'google-auth-library': 'commonjs google-auth-library',
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ],
+
+  stats: {
+    colors: true,
+    chunks: false,
+    children: false,
+  },
 
 };

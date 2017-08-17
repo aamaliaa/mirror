@@ -1,26 +1,10 @@
 import fetch from 'node-fetch'
 import moment from 'moment'
-import { host, subway } from './config'
+import { host } from './config'
 
 const utils = {
   getLastUpdated: () => {
     return get(`${host}/lastUpdated`)
-  },
-
-  getWeather: () => {
-    return get(`${host}/weather`)
-  },
-
-  getSubwayTimes: (feedId, stopId) => {
-    return get(`${host}/schedule/${feedId}/${stopId}`)
-  },
-
-  getSubwayStatus: () => {
-    return get(`${host}/status/subway`)
-  },
-
-  getCalendar: () => {
-    return get(`${host}/calendar`)
   },
 
   getLocalIP: () => {

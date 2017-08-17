@@ -37,7 +37,7 @@ class Weather extends React.Component {
     return (
       <div id="weather">
         <div className="currently">
-          <div className="temperature">{temp + '°'}</div>
+          <div className="temperature">{`${temp}°`}</div>
           <div className="icon-wrapper">
             <div className={"weather-icon " + currently.icon} />
             <div className="high-low">

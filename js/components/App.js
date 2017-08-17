@@ -31,6 +31,7 @@ class App extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props
 
+    // TODO ONLY in production
     // version polling
     setInterval(() => {
       dispatch(getAppLastUpdated())
