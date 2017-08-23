@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'underscore'
-import { weather as config } from '../config'
-import { fetchWeather } from '../actions/weather'
+import { weather as config } from '../../config'
+import { fetchWeather } from './actions'
 
 class Weather extends React.Component {
   componentDidMount() {

@@ -1,33 +1,43 @@
 /* global __dirname */
 /* global process */
-const { app, BrowserWindow, powerSaveBlocker } = require('electron')
+const electron = require('electron')
 const path = require('path')
 const url = require('url')
+
+const { app, BrowserWindow, powerSaveBlocker } = electron
 
 powerSaveBlocker.start('prevent-display-sleep')
 
 // Keep a reference for dev mode
-let dev = false;
-if ( process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath) ) {
-  dev = true;
+let dev = false
+if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
+  dev = true
 }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null
 
-function createWindow() {
+const createWindow = () => {
   // Get the displays and render the mirror on a secondary screen if it exists
-	// var displays = electron.screen.getAllDisplays()
-	var externalDisplay = null
-	// for (var i in displays) {
-	// 	if (displays[i].bounds.x > 0 || displays[i].bounds.y > 0) {
-	// 		externalDisplay = displays[i]
-	// 		break
-	// 	}
-	// }
+	var displays = electron.screen.getAllDisplays()
+	let externalDisplay = null
+	for (var i in displays) {
+		if (displays[i].bounds.x > 0 || displays[i].bounds.y > 0) {
+			externalDisplay = displays[i]
+			break
+		}
+	}
 
-	var browserWindowOptions = { width: 800, height: 600, icon: 'favicon.ico', kiosk: !dev, autoHideMenuBar: true, darkTheme: true, show: false }
+	const browserWindowOptions = {
+    width: 800,
+    height: 600,
+    icon: 'favicon.ico',
+    kiosk: !dev,
+    autoHideMenuBar: true,
+    darkTheme: true,
+    show: false
+  }
 	if (externalDisplay) {
 		browserWindowOptions.x = externalDisplay.bounds.x + 50
 		browserWindowOptions.y = externalDisplay.bounds.y + 50

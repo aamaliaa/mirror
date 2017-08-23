@@ -3,10 +3,6 @@ import moment from 'moment'
 import { host } from './config'
 
 const utils = {
-  getLastUpdated: () => {
-    return get(`${host}/lastUpdated`)
-  },
-
   getLocalIP: () => {
     return new Promise((resolve, reject) => {
       var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection

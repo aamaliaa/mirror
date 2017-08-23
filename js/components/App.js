@@ -6,7 +6,7 @@ import moment from 'moment'
 import { getAppLastUpdated } from '../actions/app'
 
 import Clock from './Clock'
-import Weather from './Weather'
+import Weather from '../widgets/weather/component'
 import Subway from './Subway'
 import Status from './Status'
 import Calendar from './Calendar'
@@ -33,20 +33,19 @@ class App extends React.Component {
 
     // TODO ONLY in production
     // version polling
-    setInterval(() => {
-      dispatch(getAppLastUpdated())
-    }, 30000) // 30 secs
+    // setInterval(() => {
+    //   dispatch(getAppLastUpdated())
+    // }, 30000) // 30 secs
 
     // clock
     setInterval(() => {
-      this.setState({
-        date: new Date()
-      })
+      this.setState({ date: new Date() })
     }, 1000)
   }
 
   componentWillUnmount() {
     this.props.unbindShortcut('down')
+    this.props.unbindShortcut('up')
   }
 
   shouldComponentUpdate(nextProps, nextState) {

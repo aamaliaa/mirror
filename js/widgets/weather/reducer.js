@@ -1,7 +1,7 @@
 import {
   RECEIVE_WEATHER,
   ERROR_WEATHER,
-} from '../actions/weather'
+} from './actions'
 
 function weather(state = {
   weather: {},

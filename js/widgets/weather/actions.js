@@ -1,6 +1,6 @@
 import Forecast from 'forecast'
-import utils from '../utils'
-import { weather as config, api } from '../../config'
+import utils from '../../utils'
+import { weather as config, api } from '../../../config'
 
 const API_KEY = api.forecastKey
 const LATITUDE = config.latitude
