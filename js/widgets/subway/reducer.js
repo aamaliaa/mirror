@@ -2,7 +2,7 @@ import {
   REQUEST_SUBWAY_TIMES,
   RECEIVE_SUBWAY_TIMES,
   ERROR_SUBWAY_TIMES,
-} from '../actions/subway'
+} from './actions'
 
 function subway(state = {
   error: null,

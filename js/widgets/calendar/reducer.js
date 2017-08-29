@@ -2,7 +2,7 @@ import {
   REQUEST_CALENDAR,
   RECEIVE_CALENDAR,
   ERROR_CALENDAR,
-} from '../actions/calendar'
+} from './actions'
 
 function calendar(state = {
   calendar: {},

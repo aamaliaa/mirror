@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
-import { calendar as config } from '../config'
+import { calendar as config } from '../../../config'
 
-import { fetchCalendar } from '../actions/calendar'
+import { fetchCalendar } from './actions'
 
 class Calendar extends React.Component {
   componentDidMount() {

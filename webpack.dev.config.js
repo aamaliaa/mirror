@@ -7,7 +7,7 @@ const OUTPUT_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
 
-  entry: SRC_DIR + '/app.js',
+  entry: SRC_DIR + '/index.js',
 
   output: {
     path: OUTPUT_DIR,

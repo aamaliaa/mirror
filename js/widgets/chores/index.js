@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'underscore'
 import moment from 'moment'
-import { chores as config } from '../config'
+import { chores as config } from '../../../config'
 
 class Chores extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {

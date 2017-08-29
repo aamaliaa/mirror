@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
 
-import { status as config } from '../config'
-import { fetchSubwayStatus } from '../actions/status'
+import { status as config } from '../../../config'
+import { fetchSubwayStatus } from './actions'
 
-class Status extends React.Component {
+class MtaStatus extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -139,4 +139,4 @@ const StatusEntry = (props) => {
   return <div className="entry" dangerouslySetInnerHTML={{__html: entry}} />
 }
 
-export default connect(state => state.status)(Status)
+export default connect(state => state.mtaStatus)(MtaStatus)

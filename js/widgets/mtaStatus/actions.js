@@ -1,5 +1,6 @@
-import utils from '../utils'
 import Mta from 'mta-gtfs'
+
+import utils from '../../utils'
 
 const mta = new Mta()
 

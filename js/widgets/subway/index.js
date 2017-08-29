@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
 
-import utils from '../utils'
+import utils from '../../utils'
 
-import { subway as config } from '../config'
-import { fetchSubwayTimes } from '../actions/subway'
+import { subway as config } from '../../../config'
+import { fetchSubwayTimes } from './actions'
 
 class Subway extends React.Component {
   componentDidMount() {

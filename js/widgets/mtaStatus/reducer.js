@@ -1,12 +1,12 @@
 import {
   RECEIVE_SUBWAY_STATUS,
   ERROR_SUBWAY_STATUS,
-} from '../actions/status'
+} from './actions'
 
-function status(state = {
+const mtaStatus = (state = {
   status: {},
   error: null
-}, action) {
+}, action) => {
   switch (action.type) {
     case RECEIVE_SUBWAY_STATUS:
       return {
@@ -24,4 +24,4 @@ function status(state = {
   }
 }
 
-export default status
+export default mtaStatus

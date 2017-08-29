@@ -1,5 +1,5 @@
 import fs from 'fs'
-import utils from '../utils'
+import utils from './utils'
 
 /*
  * action types

@@ -1,6 +1,6 @@
 import _ from 'underscore'
-import utils from '../utils'
-import { subway as config, api } from '../../config'
+import utils from '../../utils'
+import { subway as config, api } from '../../../config'
 import Mta from 'mta-gtfs'
 
 const mta = new Mta({

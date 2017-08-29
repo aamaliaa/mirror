@@ -5,8 +5,8 @@ import moment from 'moment'
 const google = require('googleapis')
 const googleAuth = require('google-auth-library')
 
-import utils from '../utils'
-import { api } from '../../config'
+import utils from '../../utils'
+import { api } from '../../../config'
 
 const googleCalSecretPath = api.googleCalSecretPath
 const googleCalTokenPath = api.googleCalTokenPath
