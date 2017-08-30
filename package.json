@@ -4,12 +4,10 @@
   "description": "a smart mirror interface",
   "main": "main.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "webpack -d --watch --colors --progress & node app.js",
-    "build": "webpack",
-    "electron": "electron ./main.js",
-    "newdev": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
-    "prod": "webpack --config webpack.build.config.js && electron --noDevServer ."
+    "dev": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
+    "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
+    "build": "webpack --config webpack.build.config.js",
+    "package": "webpack --config webpack.build.config.js"
   },
   "author": "amalia viti",
   "license": "MIT",

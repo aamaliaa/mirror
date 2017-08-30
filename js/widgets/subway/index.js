@@ -32,28 +32,14 @@ class Subway extends React.Component {
 
       if (arrivalFromNow.numMin && timeToLeave >= 0 && !leave) {
         leave = {
-          msg: `Leave ${
-            (timeToLeave === 0) ?
-              'now' :
-              `within ${timeToLeave} minute${timeToLeave > 1 ? 's' : ''}`
-          }`,
-          routeId
+          msg: `Leave ${timeToLeave === 0 ? 'now' : `in ${timeToLeave} min`}`,
+          routeId,
         }
       }
       return { routeId, arrivalTime, arrivalFromNow }
     })
 
     return { leave, times }
-  }
-
-  renderSubway = (data) => {
-    const { routeId, msg } = data
-    return (
-      <div className="message">
-        <div className={'subway subway-' + routeId}>{routeId}</div>
-        <div className="text">{msg}</div>
-      </div>
-    )
   }
 
   render() {
@@ -63,18 +49,34 @@ class Subway extends React.Component {
     }
 
     return (
-      <div>
+      <div id="subway">
+        <h5>🚊 MTA TRAIN TIMES</h5>
         {config.stops.map(({ stationId, feedId, direction, timeToWalk }) => {
-          var schedule = this.getTimes(stationId, feedId, direction, timeToWalk)
+          const schedule = this.getTimes(stationId, feedId, direction, timeToWalk)
           // if no times then don't show
           if (_.isEmpty(schedule.leave)) {
             return null
           }
-          return <div key={`${feedId}_${stationId}`} id="subway">{this.renderSubway(schedule.leave)}</div>
+
+          const { routeId, msg } = schedule.leave
+          return (
+            <SubwayLine
+              key={`${feedId}_${stationId}`}
+              routeId={routeId}
+              msg={msg}
+            />
+          )
         })}
       </div>
     )
   }
 }
+
+const SubwayLine = ({ routeId, msg }) => (
+  <div className="line">
+    <div className={'subway subway-' + routeId}>{routeId}</div>
+    <div className="text">{msg}</div>
+  </div>
+)
 
 export default connect(state => state.subway)(Subway)
