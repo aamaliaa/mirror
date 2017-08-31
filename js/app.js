@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mouseTrap } from 'react-mousetrap'
 import moment from 'moment'
+import cx from 'classnames'
+import { ipcRenderer } from 'electron'
 
 import { getAppLastUpdated } from './actions'
 
@@ -19,7 +21,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       date: new Date(),
-      mainContent: ''
+      mainContent: '',
+      hotword: false,
     }
   }
 
@@ -41,6 +44,21 @@ class App extends React.Component {
     setInterval(() => {
       this.setState({ date: new Date() })
     }, 1000)
+
+    ipcRenderer.on('hotword', (event, arg) => {
+      this.setState({ hotword: true })
+      setTimeout(() => {
+        this.setState({ hotword: false })
+      }, 3000)
+    })
+
+    ipcRenderer.on('partial-results', (event, arg) => {
+      this.showContent(arg)
+    })
+
+    ipcRenderer.on('final-results', (event, arg) => {
+      this.showContent(arg)
+    })
   }
 
   componentWillUnmount() {
@@ -53,7 +71,8 @@ class App extends React.Component {
     // or main content has changed
     return (
       (nextState.date.getMinutes() !== this.state.date.getMinutes()) ||
-      (nextState.mainContent !== this.state.mainContent)
+      (nextState.mainContent !== this.state.mainContent) ||
+      (nextState.hotword !== this.state.hotword)
     )
   }
 
@@ -76,7 +95,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { date, mainContent } = this.state
+    const { date, mainContent, hotword } = this.state
     let error = null
     if (this.props.error) {
       error = (
@@ -87,7 +106,7 @@ class App extends React.Component {
       )
     }
     return (
-      <div>
+      <div className={cx('app', { hotword })}>
         <div className="left">
           <Weather />
           <Calendar />

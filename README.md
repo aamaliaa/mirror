@@ -24,3 +24,23 @@ In order to get the correct auth credentials, follow the [Google Calendar API Qu
 
 * &uarr; - shows when the version of `main.js` the page is accessing was last built/changed
 * &darr; - shows the machine's local IP address (useful for remote debugging)
+
+### Dependencies
+
+```
+#sox install for sonus speech recognition
+sudo apt-get install sox libatlas-base-dev
+# ??
+# apt-get install -y sox libsox-fmt-all alsa-utils libatlas-base-dev libatlas3gf-base
+```
+
+### Speech commands
+
+TODO: use annyang for textual intent recognition or is there a better option?
+
+##### Subway
+* Mira, show me the schedule for the 2 and 3 trains.
+* Mira, show me the A train.
+* Mira, is the A train delayed?
+* Mira, are there delays on the A train?
+* Mira, when do I need to leave for the 2/3?

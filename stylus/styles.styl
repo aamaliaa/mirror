@@ -1,6 +1,9 @@
 @import 'mixins'
 @import 'colors'
 
+*
+  box-sizing: border-box
+
 html
   font-family: 'Open Sans', Arial, sans-serif
   font-weight: 300
@@ -18,27 +21,35 @@ h5
   margin: 5px 0
   border-bottom: 1px solid white
 
+.app
+  display: flex
+  flex-direction: row
+  border: 3px solid transparent
+  margin: 5px
+  padding: 0 5px
+  height: calc(100vh - 10px)
+  overflow: hidden
+
+  &.hotword
+    border: 3px solid magenta
+
 .left, .right
   display: flex
   flex-direction: column
   box-sizing: border-box
-  padding: 0px 5px 5px 5px
-  height: 100vh
+  height: 100%
   width: 50%
-  position: relative
 
 .left
-  float: left
+  align-self: flex-start
 
 .right
-  float: right
+  align-self: flex-end
 
 @import 'components/*'
 
 .left > div,
 .right > div
-  clearfix()
-
   &:not(:first-child)
     margin-top: 25px
 

@@ -4,6 +4,7 @@
   "description": "a smart mirror interface",
   "main": "main.js",
   "scripts": {
+    "testDev": "electron .",
     "dev": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
     "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
     "build": "webpack --config webpack.build.config.js",
@@ -34,6 +35,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "express": "^4.12.3",
     "font-awesome": "^4.5.0",
     "forecast": "0.3.2",
@@ -49,6 +51,7 @@
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "sonus": "^0.1.8",
     "underscore": "^1.8.3"
   }
 }

@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-const { spawn } = require('child_process');
+// const { spawn } = require('child_process');
 
 const SRC_DIR = path.resolve(__dirname, 'js');
 const OUTPUT_DIR = path.resolve(__dirname, 'dist');
@@ -66,15 +66,15 @@ module.exports = {
       colors: true,
       chunks: false,
       children: false,
-    },
-    setup() {
-      spawn(
-        'electron',
-        ['.'],
-        { shell: true, env: process.env, stdio: 'inherit' },
-      )
-      .on('close', code => process.exit(0))
-      .on('error', spawnError => console.error(spawnError));
+    // },
+    // setup() {
+    //   spawn(
+    //     'electron',
+    //     ['.'],
+    //     { shell: true, env: process.env, stdio: 'inherit' },
+    //   )
+    //   .on('close', code => process.exit(0))
+    //   .on('error', spawnError => console.error(spawnError));
     }
   }
 

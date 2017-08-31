@@ -3,6 +3,7 @@
 const electron = require('electron')
 const path = require('path')
 const url = require('url')
+const { spawn } = require('child_process')
 
 const { app, BrowserWindow, powerSaveBlocker } = electron
 
@@ -81,6 +82,31 @@ const createWindow = () => {
 		mainWindow = null
 	})
 }
+
+// start speech listener
+var kwsProcess = spawn('node', ['./speech.js'], { detached: false })
+
+// Handle messages from node
+kwsProcess.stderr.on('data', function (data) {
+  var message = data.toString()
+  console.error("ERROR", message.substring(4))
+})
+
+kwsProcess.stdout.on('data', function (data) {
+  var message = data.toString()
+  if (message.startsWith('!h:')) {
+    console.log('hotword', message.substring(4))
+    mainWindow.webContents.send('hotword')
+  } else if (message.startsWith('!p:')) {
+    console.log('partial-results', message.substring(4))
+    mainWindow.webContents.send('partial-results', message.substring(4))
+  } else if (message.startsWith('!f:')) {
+    console.log('final-results', message.substring(4))
+    mainWindow.webContents.send('final-results', message.substring(4))
+  } else {
+    console.error(message.substring(3))
+  }
+})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

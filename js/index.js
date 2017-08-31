@@ -9,7 +9,7 @@ import rootReducer from './reducers'
 
 import App from './App'
 
-function configureStore() {
+const configureStore = () => {
   return createStore(
     rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
