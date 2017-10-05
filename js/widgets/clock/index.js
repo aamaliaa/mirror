@@ -14,8 +14,7 @@ class Clock extends React.Component {
       <div id="clock">
         <div className="container">
           <div className="time">{m.format('h:mm')}</div>
-          <div className="day">{m.format('dddd')}</div>
-          <div className="date">{m.format('MMMM Do')}</div>
+          <div className="date">{m.format('dddd')}, {m.format('MMMM Do')}</div>
         </div>
         <div className="clearfix" />
       </div>

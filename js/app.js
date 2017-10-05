@@ -121,8 +121,9 @@ class App extends React.Component {
     ]
     return (
       <ReactGridLayout
-        className={cx('app', 'layout', { hotword })}
+        className={cx('layout', { hotword })}
         layout={layout}
+        verticalCompact={false}
         rowHeight={200}
         cols={6}
       >
