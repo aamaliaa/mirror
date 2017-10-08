@@ -4,7 +4,6 @@ import { mouseTrap } from 'react-mousetrap'
 import moment from 'moment'
 import cx from 'classnames'
 import { ipcRenderer } from 'electron'
-import RGL, { WidthProvider } from 'react-grid-layout'
 
 import { getAppLastUpdated } from './actions'
 
@@ -17,8 +16,6 @@ import Chores from './widgets/chores'
 import Citibike from './widgets/citibike'
 
 import utils from './utils'
-
-const ReactGridLayout = WidthProvider(RGL)
 
 class App extends React.Component {
   constructor(props) {
@@ -110,49 +107,22 @@ class App extends React.Component {
       )
     }
 
-    const layout = [
-      {i: 'clock', x: 0, y: 0, w: 2, h: 1},
-      {i: 'weather', x: 4, y: 0, w: 2, h: 2},
-      {i: 'citibike', x: 0, y: 1, w: 2, h: 1},
-      {i: 'subway', x: 4, y: 1, w: 2, h: 1},
-      {i: 'chores', x: 2, y: 0, w: 2, h: 1},
-      {i: 'status', x: 4, y: 2, w: 2, h: 1},
-      {i: 'calendar', x: 0, y: 2, w: 2, h: 1},
-    ]
     return (
-      <ReactGridLayout
-        className={cx('layout', { hotword })}
-        layout={layout}
-        verticalCompact={false}
-        rowHeight={200}
-        cols={6}
+      <div
+        className={cx({ hotword })}
       >
-        <div key="clock" className="widget">
           <Clock date={date} />
-        </div>
-        <div key="weather" className="widget">
           <Weather />
-        </div>
-        <div key="citibike" className="widget">
           <Citibike />
-        </div>
-        <div key="calendar" className="widget">
           <Calendar />
-        </div>
-        <div key="subway" className="widget">
           <Subway />
-        </div>
-        <div key="chores" className="widget">
           <Chores date={date} />
-        </div>
-        <div key="status" className="widget">
           <Status date={date} />
-        </div>
-        {/* {error}
+        {error}
         <div id="main">
           {mainContent}
-        </div> */}
-      </ReactGridLayout>
+        </div>
+      </div>
     )
   }
 
