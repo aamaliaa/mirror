@@ -27,7 +27,7 @@ class Citibike extends React.Component {
 
     return (
       <div id="citibike">
-        <h5>CITIBIKE</h5>
+        <div className="logo" />
         <div className="station header">
           <div className="name" />
           <div className="number">bikes</div>

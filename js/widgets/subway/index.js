@@ -50,7 +50,9 @@ class Subway extends React.Component {
 
     return (
       <div id="subway">
-        <h5>🚊 MTA TRAIN TIMES</h5>
+        <h5>
+          <i className="logo" /> Subway
+        </h5>
         {config.stops.map(({ stationId, feedId, direction, timeToWalk }) => {
           const schedule = this.getTimes(stationId, feedId, direction, timeToWalk)
           // if no times then don't show
