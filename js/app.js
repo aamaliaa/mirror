@@ -109,15 +109,19 @@ class App extends React.Component {
 
     return (
       <div
-        className={cx({ hotword })}
+        className={cx('app', { hotword })}
       >
-          <Clock date={date} />
+        <div className="left">
           <Weather />
           <Citibike />
-          <Calendar />
+          <Calendar className="widget-bottom" />
+        </div>
+        <div className="right">
+          <Clock date={date} />
           <Subway />
-          <Chores date={date} />
+          <Chores className="widget-bottom" date={date} />
           <Status date={date} />
+        </div>
         {error}
         <div id="main">
           {mainContent}

@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
 
+import Widget from '../'
 import utils from '../../utils'
 
 import { subway as config } from '../../../config'
 import { fetchSubwayTimes } from './actions'
 
-class Subway extends React.Component {
+class Subway extends Widget {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchSubwayTimes())
@@ -42,14 +43,14 @@ class Subway extends React.Component {
     return { leave, times }
   }
 
-  render() {
+  renderContent() {
     const { error } = this.props
     if (_.isEmpty(config.stops) || error) {
       return null
     }
 
     return (
-      <div id="subway">
+      <div>
         <h5>
           <i className="logo" /> Subway
         </h5>

@@ -1,5 +1,3 @@
-@import '~react-grid-layout/css/styles.css'
-@import '~react-resizable/css/styles.css'
 @import 'mixins'
 @import 'colors'
 
@@ -22,19 +20,51 @@ h5
   font-weight: normal
   margin: 5px 0
 
-#mirror
+.app
+  display: flex
+  flex-direction: row
+  justify-content: space-between
   border: 3px solid transparent
   margin: 5px
   padding: 0 5px
-  height: 100%
+  height: calc(100vh - 10px)
 
   &.hotword
     border: 3px solid magenta
 
+.left, .right
+  display: flex
+  flex-direction: column
+  box-sizing: border-box
+  height: 100%
+  width: 33.33vw
+
+.left
+  align-self: flex-start
+
+.right
+  align-self: flex-end
+
 .widget
   background: #111
   padding: 15px
+  margin-bottom: 10px
   border-radius: 4px
+  width: 33.33vw
+  transition: all 200ms ease
+
+  &.widget-bottom
+    margin-top: auto
+    align-self: flex-end
+
+  &.widget-active
+    position: absolute
+    left: 50%
+    margin-left: -25vw
+    top: 50%
+    margin-top: -25vw
+    width: 50vw
+    height: 50vw
 
 .progress-bar
   position: relative

@@ -35,6 +35,7 @@ const app = (state = appState, action) => {
 // load all widget reducers
 fs.readdirSync(path.resolve(__dirname, './widgets'))
   .forEach(widget => {
+    if (/.js/.test(widget)) return // only read directories
     fs.readdirSync(path.resolve(__dirname, './widgets', widget))
       .forEach(file => {
         if (file !== 'reducer.js') return

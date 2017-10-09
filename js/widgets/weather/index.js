@@ -1,13 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import cx from 'classnames'
 import _ from 'underscore'
+import moment from 'moment'
+import Widget from '../'
 import { weather as config } from '../../config'
 import { fetchWeather } from './actions'
 
-class Weather extends React.Component {
+class Weather extends Widget {
+  constructor(props) {
+    super(props)
+  }
+
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchWeather())
+
+    setInterval(() => {
+      this.setState({ isActive: !this.state.isActive })
+    }, 15000)
 
     this._interval = setInterval(() => {
       dispatch(fetchWeather())
@@ -18,15 +29,8 @@ class Weather extends React.Component {
     clearTimeout(this._interval)
   }
 
-  render() {
-    if (_.isEmpty(this.props.weather) || this.props.error) {
-      return (
-        <div id="weather">
-          <div className="error">{this.props.error && this.props.error.message === 'Internal Server Error' ? 'Weather offline.' : (this.props.error && this.props.error.message || '')}</div>
-        </div>
-      )
-    }
-
+  renderToday() {
+    console.log(this.props.weather)
     const { currently, daily: { data: [ dailyData ] }, hourly: { summary } } = this.props.weather
     const temp = Math.round(currently.temperature)
     const tempMax = Math.round(dailyData.temperatureMax)
@@ -35,16 +39,14 @@ class Weather extends React.Component {
     const precipitation = Math.round(dailyData.precipProbability * 100)
 
     return (
-      <div id="weather">
-        <div className="currently">
-          <div className="temperature">{`${temp}°`}</div>
-          <div className="icon-wrapper">
-            <div className={"weather-icon " + currently.icon} />
-            <div className="high-low">
-              <span className="low">{`${tempMin}°`}</span>&nbsp;&nbsp;<span className="high">{`${tempMax}°`}</span>
-            </div>
-          </div>
-        </div>
+      <div>
+        <WeatherDay
+          className="currently"
+          temperature={temp}
+          temperatureMin={tempMin}
+          temperatureMax={tempMax}
+          icon={currently.icon}
+        />
         <div className="feelsLike">Feels like {feelsLike}°</div>
         <div className="summary">{summary}</div>
         {precipitation > 0 && (
@@ -56,6 +58,63 @@ class Weather extends React.Component {
     )
   }
 
+  renderFuture() {
+    const { daily: { icon, summary, data } } = this.props.weather
+    return (
+      <div>
+        <p>{summary}</p>
+        <div className="weather-week">
+          {data.slice(1).map(({ temperatureMax, temperatureMin, icon, time }) => (
+            <WeatherDay
+              key={time}
+              temperatureMax={temperatureMax}
+              temperatureMin={temperatureMin}
+              icon={icon}
+              day={moment.unix(time).format('dddd')}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  renderActive() {
+    console.log(this.props.weather)
+    return (
+      <div>
+        {this.renderToday()}
+        {this.renderFuture()}
+      </div>
+    )
+  }
+
+  renderContent() {
+    if (_.isEmpty(this.props.weather) || this.props.error) {
+      return (
+        <div>
+          <div className="error">{this.props.error && this.props.error.message === 'Internal Server Error' ? 'Weather offline.' : (this.props.error && this.props.error.message || '')}</div>
+        </div>
+      )
+    }
+
+    return this.renderToday()
+  }
+
+}
+
+const WeatherDay = ({ className, temperature, temperatureMin, temperatureMax, icon, day }) => {
+  return (
+    <div className={cx('weather-day', className)}>
+      {temperature && <div className="temperature">{`${temperature}°`}</div>}
+      <div className="icon-wrapper">
+        <div className={"weather-icon " + icon} />
+        <div className="high-low">
+          <span className="low">{`${temperatureMin}°`}</span>&nbsp;&nbsp;<span className="high">{`${temperatureMax}°`}</span>
+        </div>
+        {day && <div className="day">{day}</div>}
+      </div>
+    </div>
+  )
 }
 
 export default connect(state => state.weather)(Weather)
