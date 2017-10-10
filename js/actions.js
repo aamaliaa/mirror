@@ -1,5 +1,6 @@
 import fs from 'fs'
 import utils from './utils'
+import commands from './commands'
 
 /*
  * action types
@@ -16,6 +17,19 @@ export function setAppLastUpdated(lastUpdated) {
 
 export function setAppError(error) {
   return { type: SET_APP_ERROR, error }
+}
+
+export const showCommandWithTimeout = (cmd) => (dispatch, getState) => {
+  // TODO figure out better matching strategy... annyang?
+  const widget = commands[cmd]
+  console.log(cmd, commands[cmd])
+  if (!widget) return // TODO *shrug*?
+
+  console.log(widget)
+  dispatch({ type: `COMMAND_ACTIVE_${widget}` })
+  setTimeout(() => {
+    dispatch({ type: `COMMAND_INACTIVE_${widget}` })
+  }, 15000)
 }
 
 const checkLastUpdated = () => {

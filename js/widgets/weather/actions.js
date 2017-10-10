@@ -20,6 +20,8 @@ const forecast = new Forecast({
 export const REQUEST_WEATHER = 'REQUEST_WEATHER'
 export const RECEIVE_WEATHER = 'RECEIVE_WEATHER'
 export const ERROR_WEATHER = 'ERROR_WEATHER'
+export const COMMAND_ACTIVE_WEATHER = 'COMMAND_ACTIVE_WEATHER'
+export const COMMAND_INACTIVE_WEATHER = 'COMMAND_INACTIVE_WEATHER'
 
 export function requestWeather() {
   return { type: REQUEST_WEATHER }
