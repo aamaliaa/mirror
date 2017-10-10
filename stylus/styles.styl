@@ -16,35 +16,56 @@ body
   padding: 0
 
 h5
-  font-size: 0.5em
-  text-transform: uppercase
+  font-size: 0.8em
+  font-weight: normal
   margin: 5px 0
-  border-bottom: 1px solid white
 
 .app
   display: flex
   flex-direction: row
+  justify-content: space-between
   border: 3px solid transparent
   margin: 5px
   padding: 0 5px
   height: calc(100vh - 10px)
-  overflow: hidden
 
   &.hotword
-    border: 3px solid magenta
+    border: 3px solid $activeBorderColor
 
 .left, .right
   display: flex
   flex-direction: column
   box-sizing: border-box
   height: 100%
-  width: 50%
+  width: 33.33vw
 
 .left
   align-self: flex-start
 
 .right
   align-self: flex-end
+
+.widget
+  background: #111
+  padding: 15px
+  margin-bottom: 10px
+  border-radius: 4px
+  width: 33.33vw
+  transition: all 200ms ease
+
+  &.widget-bottom
+    margin-top: auto
+    align-self: flex-end
+
+  &.widget-active
+    position: absolute
+    left: 50%
+    margin-left: -35vw
+    top: 50%
+    margin-top: -35vw
+    width: 70vw
+    // height: 70vw
+    border: 3px solid $activeBorderColor
 
 .progress-bar
   position: relative

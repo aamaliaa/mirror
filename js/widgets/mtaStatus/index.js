@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
 
+import Widget from '../'
+
 import { status as config } from '../../../config'
 import { fetchSubwayStatus } from './actions'
 
-class MtaStatus extends React.Component {
+class MtaStatus extends Widget {
   constructor(props) {
     super(props)
     this.state = {
@@ -70,14 +72,14 @@ class MtaStatus extends React.Component {
     clearInterval(this._carousel)
   }
 
-  render() {
+  renderContent() {
     const { show, statuses, idx } = this.state
 
     if (!show || statuses.length < 1) return null
     const status = statuses[idx]
 
     return (
-      <div id="status">
+      <div>
         <h5>MTA DELAYS <span className="time">updated {moment(status.timestamp, 'X').fromNow()}</span></h5>
         <div className="item">
           <ReactCSSTransitionGroup

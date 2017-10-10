@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'underscore'
 
+import Widget from '../'
 import { citibike as config } from '../../../config'
 import { fetchCitibikeStation } from './actions'
 
-class Citibike extends React.Component {
+class Citibike extends Widget {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchCitibikeStation())
@@ -19,15 +20,15 @@ class Citibike extends React.Component {
     clearInterval(this._interval)
   }
 
-  render() {
+  renderContent() {
     const { error } = this.props
     if (_.isEmpty(config.stations) || error) {
       return null
     }
 
     return (
-      <div id="citibike">
-        <h5>CITIBIKE</h5>
+      <div>
+        <div className="logo" />
         <div className="station header">
           <div className="name" />
           <div className="number">bikes</div>

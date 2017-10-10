@@ -5,7 +5,7 @@ import moment from 'moment'
 import cx from 'classnames'
 import { ipcRenderer } from 'electron'
 
-import { getAppLastUpdated } from './actions'
+import { getAppLastUpdated, showCommandWithTimeout } from './actions'
 
 import Clock from './widgets/clock'
 import Weather from './widgets/weather'
@@ -13,6 +13,7 @@ import Subway from './widgets/subway'
 import Status from './widgets/mtaStatus'
 import Calendar from './widgets/calendar'
 import Chores from './widgets/chores'
+import Citibike from './widgets/citibike'
 
 import utils from './utils'
 
@@ -47,9 +48,6 @@ class App extends React.Component {
 
     ipcRenderer.on('hotword', (event, arg) => {
       this.setState({ hotword: true })
-      setTimeout(() => {
-        this.setState({ hotword: false })
-      }, 3000)
     })
 
     ipcRenderer.on('partial-results', (event, arg) => {
@@ -57,7 +55,11 @@ class App extends React.Component {
     })
 
     ipcRenderer.on('final-results', (event, arg) => {
-      this.showContent(arg)
+      const text = arg.trim()
+      dispatch(showCommandWithTimeout(text))
+      this.showContent(text)
+
+      this.setState({ hotword: false })
     })
   }
 
@@ -91,7 +93,7 @@ class App extends React.Component {
 
   showContent = (mainContent) => {
     this.setState({ mainContent })
-    setTimeout(() => this.setState({ mainContent: '' }), 10000)
+    setTimeout(() => this.setState({ mainContent: '' }), 5000)
   }
 
   render() {
@@ -105,16 +107,20 @@ class App extends React.Component {
         </div>
       )
     }
+
     return (
-      <div className={cx('app', { hotword })}>
+      <div
+        className={cx('app', { hotword })}
+      >
         <div className="left">
           <Weather />
-          <Calendar />
+          <Citibike />
+          <Calendar className="widget-bottom" />
         </div>
         <div className="right">
           <Clock date={date} />
           <Subway />
-          <Chores date={date} />
+          <Chores className="widget-bottom" date={date} />
           <Status date={date} />
         </div>
         {error}

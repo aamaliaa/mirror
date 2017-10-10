@@ -47,7 +47,7 @@ module.exports = {
         loader: 'file-loader?limit=10000&mimetype=application/font-woff'
       },
       {
-        test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+        test: /\.(jpe|jpg|woff|woff2|eot|ttf|png|svg)(\?.*$|$)/,
         loader: 'url-loader'
       },
     ]
