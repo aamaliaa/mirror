@@ -30,7 +30,7 @@ h5
   height: calc(100vh - 10px)
 
   &.hotword
-    border: 3px solid magenta
+    border: 3px solid $activeBorderColor
 
 .left, .right
   display: flex
@@ -60,11 +60,12 @@ h5
   &.widget-active
     position: absolute
     left: 50%
-    margin-left: -25vw
+    margin-left: -35vw
     top: 50%
-    margin-top: -25vw
-    width: 50vw
-    height: 50vw
+    margin-top: -35vw
+    width: 70vw
+    // height: 70vw
+    border: 3px solid $activeBorderColor
 
 .progress-bar
   position: relative

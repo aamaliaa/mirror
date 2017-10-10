@@ -16,10 +16,6 @@ class Weather extends Widget {
     const { dispatch } = this.props
     dispatch(fetchWeather())
 
-    setInterval(() => {
-      this.setState({ isActive: !this.state.isActive })
-    }, 15000)
-
     this._interval = setInterval(() => {
       dispatch(fetchWeather())
     }, config.delay)
@@ -30,7 +26,6 @@ class Weather extends Widget {
   }
 
   renderToday() {
-    console.log(this.props.weather)
     const { currently, daily: { data: [ dailyData ] }, hourly: { summary } } = this.props.weather
     const temp = Math.round(currently.temperature)
     const tempMax = Math.round(dailyData.temperatureMax)
@@ -67,8 +62,8 @@ class Weather extends Widget {
           {data.slice(1).map(({ temperatureMax, temperatureMin, icon, time }) => (
             <WeatherDay
               key={time}
-              temperatureMax={temperatureMax}
-              temperatureMin={temperatureMin}
+              temperatureMax={Math.round(temperatureMax)}
+              temperatureMin={Math.round(temperatureMin)}
               icon={icon}
               day={moment.unix(time).format('dddd')}
             />
@@ -79,7 +74,14 @@ class Weather extends Widget {
   }
 
   renderActive() {
-    console.log(this.props.weather)
+    if (_.isEmpty(this.props.weather) || this.props.error) {
+      return (
+        <div>
+          <div className="error">{this.props.error && this.props.error.message === 'Internal Server Error' ? 'Weather offline.' : (this.props.error && this.props.error.message || '')}</div>
+        </div>
+      )
+    }
+
     return (
       <div>
         {this.renderToday()}
