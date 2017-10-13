@@ -10,7 +10,6 @@ import { getAppLastUpdated, showCommandWithTimeout } from './actions'
 import Clock from './widgets/clock'
 import Weather from './widgets/weather'
 import Subway from './widgets/subway'
-import Status from './widgets/mtaStatus'
 import Calendar from './widgets/calendar'
 import Chores from './widgets/chores'
 import Citibike from './widgets/citibike'
@@ -121,7 +120,6 @@ class App extends React.Component {
           <Clock date={date} />
           <Subway />
           <Chores className="widget-bottom" date={date} />
-          <Status date={date} />
         </div>
         {error}
         <div id="main">

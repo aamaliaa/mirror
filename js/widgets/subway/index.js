@@ -7,25 +7,48 @@ import Widget from '../'
 import utils from '../../utils'
 
 import { subway as config } from '../../../config'
-import { fetchSubwayTimes } from './actions'
+import { fetchSubwayTimes, fetchSubwayStatus } from './actions'
 
 class Subway extends Widget {
+  constructor(props) {
+    super(props)
+    this.scheduleInterval = null
+    this.statusInterval = null
+  }
+
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchSubwayTimes())
+    dispatch(fetchSubwayStatus())
 
-    this._interval = setInterval(() => {
+    this.scheduleInterval = setInterval(() => {
       dispatch(fetchSubwayTimes())
-    }, config.delay)
+    }, config.scheduleDelay)
+
+    this.statusInterval = setInterval(() => {
+      dispatch(fetchSubwayStatus())
+    }, config.statusDelay)
   }
 
   componentWillUnmount() {
-    clearInterval(this._interval)
+    clearInterval(this.scheduleInterval)
+    clearInterval(this.statusInterval)
+  }
+
+  renderActive() {
+    const { error, schedules, alerts } = this.props
+    return (
+      <div>
+        {Object.keys(alerts).map(routeId => (
+          alerts[routeId].map(alert => <StatusEntry {...alert} />)
+        ))}
+      </div>
+    )
   }
 
   renderContent() {
-    const { error, trains } = this.props
-    if (_.isEmpty(config.stops) || !Object.keys(trains).length || error) {
+    const { error, schedules, alerts } = this.props
+    if (_.isEmpty(config.stops) || !Object.keys(schedules).length || error) {
       return null
     }
     return (
@@ -33,11 +56,12 @@ class Subway extends Widget {
         <h5>
           <i className="logo" /> Subway
         </h5>
-        {Object.keys(trains).map(routeId => (
+        {Object.keys(schedules).map(routeId => (
           <SubwayLine
             key={routeId}
             routeId={routeId}
-            times={trains[routeId]['S']}
+            alerts={alerts}
+            times={schedules[routeId]['S']}
           />
         ))}
       </div>
@@ -45,7 +69,7 @@ class Subway extends Widget {
   }
 }
 
-const SubwayLine = ({ routeId, times }) => {
+const SubwayLine = ({ routeId, times, alerts }) => {
   let msg = null
   if (times.length < 1) return null
 
@@ -65,10 +89,22 @@ const SubwayLine = ({ routeId, times }) => {
 
   return (
     <div className="line">
-      <div className={'subway subway-' + routeId}>{routeId}</div>
+      <div>
+        <div className={'subway subway-' + routeId}>{routeId}</div>
+        {alerts[routeId].length > 0 && <i className="fa fa-exclamation-triangle" />}
+      </div>
       <div className="text">Leave {msg}</div>
     </div>
   )
+}
+
+const StatusEntry = (props) => {
+  const entry = props.entry.replace(/\[([A-Z0-9]?)\]/g, match => {
+    const route = match.match(/\[(.+?)\]/)[1]
+    return '<span class="subway subway-' + route + '">' + route + '</span>'
+  })
+
+  return <div className="entry" dangerouslySetInnerHTML={{__html: entry}} />
 }
 
 export default connect(state => state.subway)(Subway)
