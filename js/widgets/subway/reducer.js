@@ -45,10 +45,12 @@ const parseStatus = (status) => {
         .map(i => i.trim())           // trim errything
         .forEach(entry => {
           if (entry === '') return
-          const matches = entry
+          let matches = entry
             .match(/\[([A-Z0-9]?)\]/g) // match subway symbols (i.e. [2] or [L])
-            .filter((el, i, a) => i === a.indexOf(el)) // get unique
 
+          if (!matches || matches.length < 1) return
+
+          matches = matches.filter((elem, pos, arr) => arr.indexOf(elem) == pos) // get unique
           matches.forEach((m) => {
             const route = m.replace(/[[\]]/g,'')
             if (s.name.includes(route)) {
@@ -64,7 +66,8 @@ const parseStatus = (status) => {
 
 const subway = (state = {
   error: null,
-  isActive: true,
+  isActive: false,
+  activeRoute: null,
   alerts,
   schedules,
 }, action) => {
@@ -73,11 +76,13 @@ const subway = (state = {
       return {
         ...state,
         isActive: true,
+        activeRoute: action.args && action.args.length > 0 && action.args[0],
       }
     case COMMAND_INACTIVE_SUBWAY:
       return {
         ...state,
         isActive: false,
+        activeRoute: null,
       }
     case RECEIVE_SUBWAY_TIMES:
       const newRouteSchedules = {}
@@ -100,6 +105,7 @@ const subway = (state = {
 
       return {
         ...state,
+        error: false,
         schedules: {
           ...state.schedules,
           ...newRouteSchedules,
@@ -110,7 +116,7 @@ const subway = (state = {
         ...state,
         alerts: parseStatus(action.status),
       }
-    case ERROR_SUBWAY_STATUS:
+    // case ERROR_SUBWAY_STATUS:
     case ERROR_SUBWAY_TIMES:
       return {
         ...state,
