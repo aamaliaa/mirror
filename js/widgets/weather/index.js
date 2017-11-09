@@ -8,10 +8,6 @@ import { weather as config } from '../../config'
 import { fetchWeather } from './actions'
 
 class Weather extends Widget {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchWeather())

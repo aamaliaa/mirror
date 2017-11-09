@@ -23,6 +23,10 @@
     flex-direction: row
     justify-content: space-between
     align-items: center
+    margin-bottom: 5px
+
+    &:last-child
+      margin-bottom: 0
 
   .text, .subway
     display: inline-block
@@ -46,6 +50,54 @@
     height: 25px
     vertical-align: middle
 
+  .fa-exclamation-triangle
+    color: #FCCC0A
+    margin-left: 10px
+    vertical-align: middle
+
+.subway-content-active
+  .subway-large
+    display: block !important
+    margin: 0 auto
+
+  .subway-schedules
+    display: flex
+    flex-direction: row
+    border-top: 1px solid white
+    margin-top: 25px
+
+  .subway-column
+    flex: 1 50%
+    margin: 25px 0
+    padding: 0 25px
+
+    &:first-child
+      border-right: 1px solid white
+
+    h5
+      display: block
+      font-size: 14px
+      text-transform: uppercase
+      text-align: center
+
+  .subway-status
+    border-top: 1px solid white
+    padding-top: 25px
+    font-size: 16px
+
+    .TitlePlannedWork,
+    .plannedWorkDetailLink
+      display: block
+
+    .plannedWorkDetailLink i
+      margin-right: 15px
+
+    .TitlePlannedWork
+      margin-top: 15px
+
+    .plannedWorkDetail
+      display: none
+
 .subway
   display: inline-block !important
   font-family: Helvetica, sans-serif;
@@ -53,12 +105,18 @@
   background-color: $gray
   color: $white
   display: inline-block
-  font-size: 16px
+  font-size: 20px
   font-weight: bold
-  height: 25px
-  line-height: 26px;
+  height: 30px
+  line-height: 31px;
   text-align: center
-  width: 25px
+  width: 30px
+
+  &.subway-large
+    height: 90px
+    width: 90px
+    font-size: 75px
+    line-height: 92px
 
 .subway-1,
 .subway-2,

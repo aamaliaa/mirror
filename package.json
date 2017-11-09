@@ -24,6 +24,7 @@
     "electron-rebuild": "^1.6.0",
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "0.10.1",
+    "font-awesome-stylus": "^4.7.1",
     "font-awesome-webpack": "^0.0.5-beta.2",
     "json-loader": "^0.5.4",
     "less": "^2.7.2",

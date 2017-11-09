@@ -2220,6 +2220,10 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
+font-awesome-stylus@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/font-awesome-stylus/-/font-awesome-stylus-4.7.1.tgz#94eadd7ebb1e6bcdabbb1e68e7702c9b173b1bf0"
+
 font-awesome-webpack@^0.0.5-beta.2:
   version "0.0.5-beta.2"
   resolved "https://registry.yarnpkg.com/font-awesome-webpack/-/font-awesome-webpack-0.0.5-beta.2.tgz#9ea5f22f0615d08e76d8db341563649a726286d6"

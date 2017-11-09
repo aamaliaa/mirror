@@ -21,14 +21,19 @@ export function setAppError(error) {
 
 export const showCommandWithTimeout = (cmd) => (dispatch, getState) => {
   // TODO figure out better matching strategy... annyang?
-  const widget = commands[cmd]
-  console.log(cmd, commands[cmd])
-  if (!widget) return // TODO *shrug*?
+  let command = null
+  for (let i = 0; i<commands.length; i++) {
+    const { pattern } = commands[i]
+    const m = pattern.exec(cmd)
+    if (m) command = { ...commands[i], matches: m }
+  }
 
-  console.log(widget)
-  dispatch({ type: `COMMAND_ACTIVE_${widget}` })
+  if (!command) return // TODO *shrug*?
+  const { widgetName, matches } = command
+
+  dispatch({ type: `COMMAND_ACTIVE_${widgetName.toUpperCase()}`, args: matches.slice(1) })
   setTimeout(() => {
-    dispatch({ type: `COMMAND_INACTIVE_${widget}` })
+    dispatch({ type: `COMMAND_INACTIVE_${widgetName.toUpperCase()}` })
   }, 15000)
 }
 
