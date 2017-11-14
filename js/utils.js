@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import moment from 'moment'
-import { host } from './config'
+import { networkInterfaces } from 'os'
 
 const optionalParam = /\s*\((.*?)\)\s*/g
 const optionalRegex = /(\(\?:[^)]+\))\?/g
@@ -19,20 +19,9 @@ const utils = {
   },
 
   getLocalIP: () => {
-    return new Promise((resolve, reject) => {
-      const RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
-      const pc = new RTCPeerConnection({iceServers:[]})
-      const noop = () => {}
-
-      pc.createDataChannel("")  //create a bogus data channel
-      pc.createOffer(pc.setLocalDescription.bind(pc), noop) // create offer and set local description
-      pc.onicecandidate = ice => {  // listen for candidate events
-        if(!ice || !ice.candidate || !ice.candidate.candidate) return
-        const myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1]
-        resolve(myIP)
-        pc.onicecandidate = noop
-      }
-    })
+    return [].concat.apply([], Object.values(networkInterfaces()))
+      .filter(details => details.family === 'IPv4' && !details.internal)
+      .pop().address
   },
 
   formatTime: (timestamp) => {

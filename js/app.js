@@ -82,8 +82,8 @@ class App extends React.Component {
   }
 
   showIP = () => {
-    utils.getLocalIP()
-    .then(ip => this.showContent(ip))
+    const ip = utils.getLocalIP()
+    this.showContent(ip)
   }
 
   showLastUpdated = () => {
