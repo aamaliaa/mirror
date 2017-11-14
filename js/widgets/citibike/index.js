@@ -7,6 +7,11 @@ import { citibike as config } from '../../../config'
 import { fetchCitibikeStation } from './actions'
 
 class Citibike extends Widget {
+  constructor(props) {
+    super(props)
+    this._interval = null
+  }
+
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchCitibikeStation())

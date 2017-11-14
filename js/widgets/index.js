@@ -41,6 +41,8 @@ class AbstractWidget extends Component {
       content = this.renderContent()
     }
 
+    if (content === null) return null
+
     return (
       <section className={cx(this.getWidgetClassNames())}>
         {content}

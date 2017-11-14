@@ -35,32 +35,43 @@ class Subway extends Widget {
     clearInterval(this.statusInterval)
   }
 
+  renderSchedules() {
+    const { schedules, activeRoute, alerts } = this.props
+    if (!schedules[activeRoute]) return null
+
+    return (
+      <div className="subway-schedules">
+        <div className="subway-column">
+          <h5>Downtown</h5>
+          <SubwayLine
+            key={`${activeRoute}_S`}
+            routeId={activeRoute}
+            alerts={alerts}
+            times={schedules[activeRoute]['S']}
+          />
+        </div>
+        <div className="subway-column">
+          <h5>Uptown</h5>
+          <SubwayLine
+            key={`${activeRoute}_N`}
+            routeId={activeRoute}
+            alerts={alerts}
+            times={schedules[activeRoute]['N']}
+          />
+        </div>
+      </div>
+    )
+  }
+
   renderActive() {
     const { error, schedules, alerts, activeRoute } = this.props
     const routeAlerts = alerts[activeRoute]
     return (
       <div className="subway-content-active">
         <div className={'subway subway-large subway-' + activeRoute}>{activeRoute}</div>
-        <div className="subway-schedules">
-          <div className="subway-column">
-            <h5>Downtown</h5>
-            <SubwayLine
-              key={`${activeRoute}_S`}
-              routeId={activeRoute}
-              alerts={alerts}
-              times={schedules[activeRoute]['S']}
-            />
-          </div>
-          <div className="subway-column">
-            <h5>Uptown</h5>
-            <SubwayLine
-              key={`${activeRoute}_N`}
-              routeId={activeRoute}
-              alerts={alerts}
-              times={schedules[activeRoute]['N']}
-            />
-          </div>
-        </div>
+
+        {this.renderSchedules()}
+        
         <div className="subway-status">
           {routeAlerts.map((alert, i) => <StatusEntry key={i} {...alert} />)}
           {routeAlerts.length < 1 && 'Good service.'}
@@ -115,7 +126,7 @@ const SubwayLine = ({ routeId, times, alerts, limit }) => {
   return (
     <div>
       {entries.slice(0, limit).map(e => (
-        <div className="line">
+        <div className="line" key={e}>
           <div>
             <div className={'subway subway-' + routeId}>{routeId}</div>
             {alerts[routeId].length > 0 && <i className="fa fa-exclamation-triangle" />}
