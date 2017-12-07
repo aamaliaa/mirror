@@ -10,9 +10,9 @@ const { app, BrowserWindow, powerSaveBlocker } = electron
 powerSaveBlocker.start('prevent-display-sleep')
 
 // Keep a reference for dev mode
-let dev = false
-if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
-  dev = true
+let dev = true
+if (process.argv.includes("--noDevServer")) {
+  dev = false
 }
 
 // Keep a global reference of the window object, if you don't, the window will
