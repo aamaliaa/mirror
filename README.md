@@ -8,6 +8,13 @@ For development, run `npm run dev`.
 
 To build and "deploy" the smart mirror app, `npm run build` and then `npm start` and navigate to http://localhost:3005.
 
+### Installing on Raspberry Pi
+
+For speech recognition...
+```
+sudo apt-get install libmagic-dev libatlas-base-dev
+```
+
 #### Forecast.io API
 
 Register for a forecast.io API key [here](https://developer.forecast.io/). The calls to the forecast.io API are cached every 15 min to prevent $$$... also do you really think the weather is going to change much over 15 minutes?

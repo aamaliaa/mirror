@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import rootReducer from './reducers'
 
-import App from './App'
+import App from './app'
 
 const configureStore = () => {
   return createStore(
