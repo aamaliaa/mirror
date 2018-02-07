@@ -24,6 +24,8 @@ class Chores extends Widget {
 
   renderContent() {
     const chores = this.parseChores()
+    if (chores.length < 1) return null
+
     return (
       <div>
         {chores.map((c, i) => {

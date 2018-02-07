@@ -11,12 +11,12 @@ class AbstractWidget extends Component {
   }
 
   renderContent() {
-    console.warn("A Widget has not implemented the renderContent method")
+    console.warn(`${this.constructor.name.toLowerCase()} widget has not implemented the renderContent method`)
     return null
   }
 
   renderActive() {
-    console.warn("A Widget has not implemented the renderActive method")
+    console.warn(`${this.constructor.name.toLowerCase()} widget has not implemented the renderActive method`)
     return null
   }
 

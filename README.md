@@ -12,8 +12,11 @@ To build and "deploy" the smart mirror app, `npm run build` and then `npm start`
 
 For speech recognition...
 ```
-sudo apt-get install libmagic-dev libatlas-base-dev
+sudo apt-get install sox libmagic-dev libatlas-base-dev
 ```
+
+Set up `~/.asoundrc`...
+https://raspberrypi.stackexchange.com/questions/38161/how-to-reorder-the-index-for-mic-on-new-raspbian-jessie-for-pocketsphinx/38163
 
 #### Forecast.io API
 
