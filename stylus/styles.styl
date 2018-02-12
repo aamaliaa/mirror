@@ -6,6 +6,15 @@ $fa-font-path = '~font-awesome-stylus/fonts'
 @import 'mixins'
 @import 'colors'
 
+@keyframes fadein {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
 *
   box-sizing: border-box
 
@@ -39,6 +48,12 @@ h4
   margin: 5px
   padding: 0 5px
   height: calc(100vh - 10px)
+
+  -webkit-user-select: none
+  -webkit-app-region: drag
+
+  background: #000
+  animation: fadein 0.5s
 
   &.hotword
     border: 3px solid $activeBorderColor

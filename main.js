@@ -4,8 +4,9 @@ const electron = require('electron')
 const path = require('path')
 const url = require('url')
 const { spawn } = require('child_process')
+const menuTemplate = require('./menu')
 
-const { app, BrowserWindow, powerSaveBlocker } = electron
+const { app, BrowserWindow, Menu, powerSaveBlocker } = electron
 
 powerSaveBlocker.start('prevent-display-sleep')
 
@@ -18,6 +19,33 @@ if (process.argv.includes("--noDevServer")) {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null
+let prefsWindow = null
+
+let indexPath
+if (dev && process.argv.indexOf('--noDevServer') === -1) {
+  indexPath = url.format({
+    protocol: 'http:',
+    host: 'localhost:8080',
+    pathname: 'index.html',
+    slashes: true,
+  })
+} else {
+  indexPath = url.format({
+    protocol: 'file:',
+    pathname: path.join(__dirname, 'dist/index.html'),
+    slashes: true,
+  })
+}
+
+const createPrefsWindow = () => {
+  prefsWindow = new BrowserWindow({ width: 500, height: 500, parent: mainWindow, alwaysOnTop: true })
+  prefsWindow.loadURL('https://github.com')
+  prefsWindow.show()
+
+  prefsWindow.on('closed', () => {
+    prefsWindow = null
+  })
+}
 
 const createWindow = () => {
   // Get the displays and render the mirror on a secondary screen if it exists
@@ -47,22 +75,7 @@ const createWindow = () => {
   // Create the browser window.
 	mainWindow = new BrowserWindow(browserWindowOptions)
 
-	// and load the index.html of the app.
-  let indexPath
-  if ( dev && process.argv.indexOf('--noDevServer') === -1 ) {
-    indexPath = url.format({
-      protocol: 'http:',
-      host: 'localhost:8080',
-      pathname: 'index.html',
-      slashes: true,
-    })
-  } else {
-    indexPath = url.format({
-      protocol: 'file:',
-      pathname: path.join(__dirname, 'dist/index.html'),
-      slashes: true,
-    })
-  }
+	// load app's index path.
   mainWindow.loadURL( indexPath )
 
 	// Don't show until we are ready and loaded
@@ -80,7 +93,11 @@ const createWindow = () => {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
 		mainWindow = null
-	})
+  })
+
+  // Render menus
+  const menu = Menu.buildFromTemplate(menuTemplate(createPrefsWindow))
+  Menu.setApplicationMenu(menu)
 }
 
 // start speech listener
