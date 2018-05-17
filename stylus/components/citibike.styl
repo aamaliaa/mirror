@@ -1,0 +1,31 @@
+.widget-citibike
+  .logo
+    background-image: url(../icons/citibike_logo.svg)
+    background-size: cover
+    height: 22.4px
+    width: 85.2px
+
+  .station
+    display: flex
+    flex-direction: row
+    align-items: center
+    padding-bottom: 10px
+
+    .name
+      flex: 0 0 225px
+      margin-right: 10px
+
+    .number, .name
+      font-size: 20px
+      margin-right: 10px
+
+    .progress-bar
+      flex: 1
+      overflow: hidden
+      border: 0
+      border-radius: 4px
+      background: $lightGray
+      height: 25px
+
+  .header > .number
+      font-size: 12px

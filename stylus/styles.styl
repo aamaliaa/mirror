@@ -1,10 +1,19 @@
+$fa-font-path = '~font-awesome-stylus/fonts'
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat')
+
+@import '~font-awesome-stylus/index'
 @import 'mixins'
 @import 'colors'
 
+*
+  box-sizing: border-box
+
 html
-  font-family: 'Open Sans', Arial, sans-serif
+  font-family: 'Montserrat', Arial, sans-serif
   font-weight: 300
   font-size: 24px
+  text-rendering: optimizeLegibility
   background-color: #000
   color: #fff
 
@@ -12,27 +21,80 @@ body
   margin: 0
   padding: 0
 
+h5
+  font-size: 0.8em
+  font-weight: normal
+  margin: 5px 0
+
+h4
+  font-size: 0.7em
+  font-weight: bold
+  text-transform: uppercase
+
+.app
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  border: 3px solid transparent
+  margin: 5px
+  padding: 0 5px
+  height: calc(100vh - 10px)
+
+  &.hotword
+    border: 3px solid $activeBorderColor
+
 .left, .right
   display: flex
   flex-direction: column
   box-sizing: border-box
-  padding: 0px 5px 5px 5px
-  height: 100vh
-  width: 50%
-  position: relative
+  height: 100%
+  width: 33.33vw
 
 .left
-  float: left
+  align-self: flex-start
 
 .right
-  float: right
+  align-self: flex-end
+
+.widget
+  background: #111
+  padding: 15px
+  margin-bottom: 10px
+  border-radius: 4px
+  width: 33.33vw
+  transition: all 200ms ease
+
+  &.widget-bottom
+    margin-top: auto
+    align-self: flex-end
+
+  &.widget-active
+    position: absolute
+    z-index: 5
+    left: 50%
+    margin-left: -35vw
+    top: 50%
+    margin-top: -35vw
+    width: 70vw
+    // height: 70vw
+    border: 3px solid $activeBorderColor
+
+.progress-bar
+  position: relative
+  border: 1px solid $white
+  background: transparent
+  height: 35px
+
+  .complete
+    position: absolute
+    background: $citibikeBlue
+    height: 100%
+    width: 50%
 
 @import 'components/*'
 
 .left > div,
 .right > div
-  clearfix()
-
   &:not(:first-child)
     margin-top: 25px
 

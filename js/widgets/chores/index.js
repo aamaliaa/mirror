@@ -1,9 +1,11 @@
 import React from 'react'
 import _ from 'underscore'
 import moment from 'moment'
-import { chores as config } from '../config'
 
-class Chores extends React.Component {
+import Widget from '../'
+import { chores as config } from '../../../config'
+
+class Chores extends Widget {
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.date.getHours() !== this.props.date.getHours()
   }
@@ -20,11 +22,12 @@ class Chores extends React.Component {
     })
   }
 
-  render() {
+  renderContent() {
     const chores = this.parseChores()
+    if (chores.length < 1) return null
 
     return (
-      <div id="chores">
+      <div>
         {chores.map((c, i) => {
           return (
             <div className="chore" key={i}>

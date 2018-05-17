@@ -1,49 +1,33 @@
 import fetch from 'node-fetch'
 import moment from 'moment'
-import { host, subway } from './config'
+import { networkInterfaces } from 'os'
+
+const optionalParam = /\s*\((.*?)\)\s*/g
+const optionalRegex = /(\(\?:[^)]+\))\?/g
+const namedParam    = /(\(\?)?:\w+/g
+const splatParam    = /\*\w+/g
+const escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#]/g
 
 const utils = {
-  getLastUpdated: () => {
-    return get(`${host}/lastUpdated`)
-  },
-
-  getWeather: () => {
-    return get(`${host}/weather`)
-  },
-
-  getSubwayTimes: (feedId, stopId) => {
-    return get(`${host}/schedule/${feedId}/${stopId}`)
-  },
-
-  getSubwayStatus: () => {
-    return get(`${host}/status/subway`)
-  },
-
-  getCalendar: () => {
-    return get(`${host}/calendar`)
+  commandToRegExp: (command) => {
+    command = command.replace(escapeRegExp, '\\$&')
+                .replace(optionalParam, '(?:$1)?')
+                .replace(namedParam, (match, optional) => (optional ? match : '([^\\s]+)'))
+                .replace(splatParam, '(.*?)')
+                .replace(optionalRegex, '\\s*$1?\\s*')
+    return new RegExp('^' + command + '$', 'i')
   },
 
   getLocalIP: () => {
-    return new Promise((resolve, reject) => {
-      var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
-      var pc = new RTCPeerConnection({iceServers:[]})
-      var noop = () => {}
-
-      pc.createDataChannel("")  //create a bogus data channel
-      pc.createOffer(pc.setLocalDescription.bind(pc), noop) // create offer and set local description
-      pc.onicecandidate = ice => {  // listen for candidate events
-        if(!ice || !ice.candidate || !ice.candidate.candidate) return
-        var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1]
-        resolve(myIP)
-        pc.onicecandidate = noop
-      }
-    })
+    return [].concat.apply([], Object.values(networkInterfaces()))
+      .filter(details => details.family === 'IPv4' && !details.internal)
+      .pop().address
   },
 
   formatTime: (timestamp) => {
-    var numMin = null
-    var time = moment(timestamp, 'X').fromNow()
-    var found = time.match(/^in ([0-9]+) minutes/)
+    let numMin = null
+    const time = moment(timestamp, 'X').fromNow()
+    const found = time.match(/^in ([0-9]+) minutes/)
     if (found && found[1]) {
       numMin = found[1]
     }

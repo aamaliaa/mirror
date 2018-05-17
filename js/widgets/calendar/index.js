@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import _ from 'underscore'
-import { calendar as config } from '../config'
 
-import { fetchCalendar } from '../actions/calendar'
+import Widget from '../'
+import { calendar as config } from '../../../config'
+import { fetchCalendar } from './actions'
 
-class Calendar extends React.Component {
+class Calendar extends Widget {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchCalendar())
@@ -55,10 +56,10 @@ class Calendar extends React.Component {
     )
   }
 
-  render() {
+  renderContent() {
     const { calendar } = this.props
     if (_.isEmpty(calendar)) {
-      return false
+      return null
     }
 
     const now = moment()
@@ -74,7 +75,7 @@ class Calendar extends React.Component {
     })
 
     return (
-      <div id="calendar">
+      <div>
         {this.renderItems(todayItems, 'today')}
         {this.renderItems(tomorrowItems, 'tomorrow')}
       </div>

@@ -1,6 +1,7 @@
-#weather
-  width: 100%
+$red = #FF4136
+$blue = #0074D9
 
+.widget-weather
   .error
     padding: 10px
     color: gray
@@ -23,10 +24,10 @@
     font-weight: bold
 
     .high
-      color: #FF4136
+      color: $red
 
     .low
-      color: #0074D9
+      color: $blue
 
   .feelsLike
     font-size: 1.2em
@@ -59,3 +60,26 @@
       background-image: url(../icons/snow.svg)
     &.wind
       background-image: url(../icons/wind.svg)
+
+  .weather-week
+   display: flex
+   flex-direction: row
+
+   .weather-day
+     display: flex
+     flex-direction: column
+     align-items: center
+     flex: 1
+
+     .weather-icon
+       width: 3.5em
+       height: 3em
+
+
+     .high-low
+       font-size: 0.6em
+       font-weight: normal
+
+     .day
+       text-align: center
+       font-size: 0.75em
