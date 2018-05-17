@@ -6,6 +6,8 @@ $fa-font-path = '~font-awesome-stylus/fonts'
 @import 'mixins'
 @import 'colors'
 
+$widgetWidth = 38vw
+
 *
   box-sizing: border-box
 
@@ -36,9 +38,8 @@ h4
   flex-direction: row
   justify-content: space-between
   border: 3px solid transparent
-  margin: 5px
-  padding: 0 5px
-  height: calc(100vh - 10px)
+  margin: 33px 3px
+  height: calc(100vh - 66px)
 
   &.hotword
     border: 3px solid $activeBorderColor
@@ -48,12 +49,13 @@ h4
   flex-direction: column
   box-sizing: border-box
   height: 100%
-  width: 33.33vw
+  width: 50vw
 
 .left
   align-self: flex-start
 
 .right
+  align-items: flex-end
   align-self: flex-end
 
 .widget
@@ -61,11 +63,12 @@ h4
   padding: 15px
   margin-bottom: 10px
   border-radius: 4px
-  width: 33.33vw
+  width: $widgetWidth
   transition: all 200ms ease
 
   &.widget-bottom
     margin-top: auto
+    margin-bottom: 0
     align-self: flex-end
 
   &.widget-active
