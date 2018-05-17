@@ -2,6 +2,7 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 let config
+
 try {
 	config = require("./config.js")
 } catch (e) {
@@ -9,7 +10,7 @@ try {
 }
 
 if (!config || !config.speech || !config.speech.keyFilename || !config.speech.hotwords || !config.speech.language) {
-	throw "Configuration Error! See: https://docs.smart-mirror.io/docs/configure_the_mirror.html#speech"
+	throw "Configuration error."
 }
 
 var keyFile = JSON.parse(fs.readFileSync(path.resolve(config.speech.keyFilename), "utf8"))
