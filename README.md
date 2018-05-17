@@ -24,13 +24,23 @@ _TODO: document widget creation and infrastructure_
 
 ## Installing on Raspberry Pi
 
-For speech recognition...
+1. Make sure Node.js/NPM is installed.
+
+2. For speech recognition...
 ```
 sudo apt-get install sox libmagic-dev libatlas-base-dev
 ```
 
 Set up `~/.asoundrc` -> some info on that [here](https://raspberrypi.stackexchange.com/questions/38161/how-to-reorder-the-index-for-mic-on-new-raspbian-jessie-for-pocketsphinx/38163).
 
+3. Turn off screensaver:
+```
+sudo apt-get install x11-xserver-utils
+```
+  http://www.raspberry-projects.com/pi/pi-operating-systems/raspbian/screensaver
+
+4. Run on launch:
+  http://www.raspberry-projects.com/pi/pi-operating-systems/raspbian/auto-running-programs-gui
 
 ## Keyboard Shortcuts
 
